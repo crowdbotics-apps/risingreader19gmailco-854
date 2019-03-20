@@ -7,28 +7,34 @@ before_all do
 end
 
 platform :ios do
-   # iOS Lanes
-   desc 'Fetch certificates and provisioning profiles'
-lane :certificates do
-    #git_url("https://gitlab.com/tanduong/certificates.git")
+  # iOS Lanes
+  desc 'Fetch certificates and provisioning profiles'
+  lane :certificates do
+      # https://gitlab.com/tanduong/certificates.git / app specific pass levk-yzcy-gquw-pcpu
+      #https://github.com/crowdbotics/codesign-ready2-meet /ssh
+      #https://gitlab.com/tanduong/cb-certificates
 
-  match(app_identifier: 'com.app.bundle', type: 'development', readonly: false)
-  match(app_identifier: 'com.app.bundle', type: 'appstore', readonly: false)
-end
+    #match(app_identifier: 'com.readyt2meet2.app', type: 'development', readonly: false)
+    match(app_identifier: 'com.readyt2meet2.app', type: 'appstore', readonly: false)
+  end
 
-desc 'Build the iOS application.'
-private_lane :build do
-  certificates
-  increment_build_number(xcodeproj: './ios/name.xcodeproj')
-  gym(scheme: 'name', project: './ios/name.xcodeproj')
-end
+  desc 'Build the iOS application.'
+  private_lane :build do
+    certificates
+    increment_build_number(xcodeproj: './ios/risingreader19gmailco_854.xcodeproj')
+    gym(scheme: 'risingreader19gmailco_854', project: './ios/risingreader19gmailco_854.xcodeproj')
+    
+  end
 
-desc 'Ship to Testflight.'
+  desc 'Ship to Testflight.'
   lane :beta do
-    build
-    pilot
-    commit_version_bump(message: 'Bump build', xcodeproj: './ios/name.xcodeproj')
-    push_to_git_remote
+    #build
+    
+    sync_code_signing(type: "appstore")    
+    increment_build_number(xcodeproj: './ios/risingreader19gmailco_854.xcodeproj')
+    build_app(scheme: "risingreader19gmailco_854", project: './ios/risingreader19gmailco_854.xcodeproj')
+    upload_to_testflight
+    
   end
 
 end
