@@ -1,0 +1,27 @@
+fastlane_version '2.53.1'
+
+platform :ios do
+  
+  desc 'Ship to Testflight.'
+  lane :beta do
+    
+    increment_build_number(xcodeproj: './ios/RisingReaders.xcodeproj')
+     
+    build_app(
+      scheme: "RisingReaders", workspace: './ios/RisingReaders.xcworkspace',
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+          "com.crowdbotics.rising-readers" => "RisingReaders AppStore"
+        }
+      }
+    )
+    upload_to_testflight
+    
+  end
+
+end
+
+platform :android do
+  # Android Lanes
+end

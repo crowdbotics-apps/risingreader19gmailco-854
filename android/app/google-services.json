@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "81880729623",
+    "firebase_url": "https://rising-readers.firebaseio.com",
+    "project_id": "rising-readers",
+    "storage_bucket": "rising-readers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81880729623:android:3c149302abd3ab3e",
+        "android_client_info": {
+          "package_name": "com.crowdbotics.risingreaders"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81880729623-ta12gut8o1ge7shtm2a7ddhrlum90lbk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGWNQjrfIjs3TdU3qSLXzsQUfP-Q5HMDA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

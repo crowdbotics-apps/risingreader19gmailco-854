@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">risingreader19gmailco_854</string>
+    <string name="app_name">RisingReaders</string>
+    <string name="facebook_app_id">811557402534681</string>
+    <string name="fb_login_protocol_scheme">fb811557402534681</string>
 </resources>
