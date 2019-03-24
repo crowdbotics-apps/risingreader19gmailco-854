@@ -59,5 +59,25 @@ export default StyleSheet.create({
   signup: {
     fontSize: 18,
     fontWeight: '600'
+  },
+  input: {
+    marginBottom: 15
+  },
+  button: {
+    marginBottom: 15, alignSelf: 'center', width: 150
+  },
+  buttonText: {
+    width: '100%',
+    textAlign: 'center'
+  },
+  disabled: {
+    backgroundColor: 'grey'
+  },
+  switch: {
+    marginLeft: 10,
+  },
+  switchWrapper: {
+    justifyContent: 'center',
+    paddingTop: 15
   }
 });

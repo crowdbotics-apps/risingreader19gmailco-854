@@ -89,5 +89,15 @@ export default StyleSheet.create({
     fontSize: 16,
     textDecorationLine: 'underline',
     color: '#cccccc'
-  }
+  },
+  input: {
+    marginBottom: 15
+  },
+  button: {
+    marginBottom: 15, alignSelf: 'center', width: 150
+  },
+  buttonText: {
+    width: '100%',
+    textAlign: 'center'
+  },
 });

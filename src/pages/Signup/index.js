@@ -1,17 +1,32 @@
 import React from 'react';
+import { View, Image, TextInput, Linking, ScrollView } from 'react-native';
 import {
-  View,
-  Image,
-  TextInput,
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Body,
   Text,
-  Linking,
-  ScrollView
-} from 'react-native';
+  Form,
+  Item,
+  Label,
+  Input,
+  Switch,
+  Grid,
+  Row,
+  Col,
+  Thumbnail
+} from 'native-base';
+
 import PropTypes from 'prop-types';
 import { CheckBox } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { AppContext, Button } from 'app/components';
+import { AppContext } from 'app/components';
 import { AuthController } from 'app/services';
 import { alert, success } from 'app/utils/Alert';
 
@@ -144,35 +159,46 @@ class SignupScreen extends React.Component {
 
   renderSignup = () => {
     return (
-      <ScrollView>
-        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-          <View style={styles.content}>
-            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
-            <View style={styles.content}>
-              <TextInput
-                style={styles.input}
+      <Container>
+        <Content
+          padder
+          contentContainerStyle={{ alignItems: 'center', width: '100%' }}
+        >
+          <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+
+          <Form style={{ width: '90%' }}>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="user" />
+              <Input
                 placeholder="Name *"
                 value={this.state.name}
                 autoCapitalize="none"
                 onChangeText={(value) => this.inputChanged('name', value)}
               />
-              <TextInput
-                style={styles.input}
+            </Item>
+
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome5" name="envelope" />
+              <Input
                 placeholder="Email *"
                 value={this.state.email}
                 autoCapitalize="none"
                 onChangeText={(value) => this.inputChanged('email', value)}
               />
-              <TextInput
-                style={styles.input}
+            </Item>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="lock" />
+              <Input
                 placeholder="Password *"
                 value={this.state.password}
                 autoCapitalize="none"
                 onChangeText={(value) => this.inputChanged('password', value)}
                 secureTextEntry={true}
               />
-              <TextInput
-                style={styles.input}
+            </Item>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="lock" />
+              <Input
                 placeholder="Confirm Password *"
                 value={this.state.confirmpswd}
                 autoCapitalize="none"
@@ -181,66 +207,74 @@ class SignupScreen extends React.Component {
                 }
                 secureTextEntry={true}
               />
-              <View style={styles.termsContainer}>
-                <CheckBox
-                  containerStyle={styles.checkbox}
-                  checked={this.state.agreeTerms}
-                  onIconPress={this.agreeTerms}
-                />
-                <Text style={styles.terms}>{'Agree to '}</Text>
-                <Button
-                  textStyle={styles.termsBtnText}
-                  text="Terms and Conditions"
-                  onPress={this.termsPressed}
-                />
-              </View>
-              <Button
-                // disabled={!this.state.agreeTerms}
-                containerStyle={styles.signupBtn}
-                textStyle={styles.signup}
-                text="Register Me"
-                onPress={this.signup}
+            </Item>
+            <Grid>
+              <Row>
+              <CheckBox
+                checked={this.state.agreeTerms}
+                onPress={this.agreeTerms}
+                
               />
-              <View style={styles.loginContainer}>
-                <Text style={styles.description}>
-                  Already have an account?{' '}
-                </Text>
-                <Button
-                  textStyle={styles.login}
-                  text="Log In"
-                  onPress={this.goToLogin}
-                />
-              </View>
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </ScrollView>
+              <Button
+                transparent
+                onPress={this.termsPressed}
+                style={{marginTop: 5, marginLeft: -25}}
+              >
+                <Text style={{textAlign: 'left', padding: 0}}>Agree to Terms and Conditions</Text>
+              </Button>
+              </Row>
+            </Grid>
+              
+            <Button rounded primary style={styles.button} onPress={this.signup}>
+              <Text style={styles.buttonText}>Register Me</Text>
+            </Button>
+
+            <Button
+              transparent
+              dark
+              onPress={this.goToLogin}
+              style={{ alignSelf: 'center', marginBottom: 40 }}
+            >
+              <Text>Already have an account? Log In</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   };
 
   renderVerifcation = () => {
     return (
-      <View style={styles.container}>
-        <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title}> We sent verification email.</Text>
-        <Button
-          disabled={!this.state.allowResendEmail}
-          containerStyle={styles.resendBtn}
-          textStyle={
-            this.state.allowResendEmail
-              ? styles.resendActive
-              : styles.resendInactive
-          }
-          text="Resend verification email"
-          onPress={this.resendVerification}
-        />
-        <Button
-          containerStyle={styles.signupBtn}
-          textStyle={styles.signup}
-          text="Log In"
-          onPress={this.goToLogin}
-        />
-      </View>
+      <Container>
+        <Content
+          padder
+          contentContainerStyle={{ alignItems: 'center', width: '100%' }}
+        >
+          <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+
+          <Form style={{ width: '90%', alignItems: 'center' }}>
+            <Label>We sent verification email.</Label>
+            <Button
+              rounded
+              primary
+              style={{marginVertical: 30}}
+              onPress={this.resendVerification}
+              disabled={!this.state.allowResendEmail}
+            >
+              <Text style={styles.buttonText}>Resend verification email</Text>
+            </Button>
+
+            <Button
+              rounded
+              primary
+              style={styles.button}
+              onPress={this.goToLogin}
+            >
+              <Text style={styles.buttonText}>Log In</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   };
 

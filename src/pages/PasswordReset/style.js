@@ -51,5 +51,15 @@ export default StyleSheet.create({
   login: {
     fontSize: 18,
     fontWeight: '600'
-  }
+  },
+  input: {
+    marginBottom: 15
+  },
+  button: {
+    marginBottom: 15, alignSelf: 'center', width: 150
+  },
+  buttonText: {
+    width: '100%',
+    textAlign: 'center'
+  },
 });

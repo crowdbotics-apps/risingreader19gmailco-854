@@ -1,16 +1,36 @@
 import React from 'react';
-import { View, Image, TextInput, Text, ScrollView } from 'react-native';
+import { View, Image, TextInput, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { AuthController } from 'app/services';
-import { AppContext, Button } from 'app/components';
+import { AppContext } from 'app/components';
 import { alert } from 'app/utils/Alert';
-
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Body,
+  Text,
+  Form,
+  Item,
+  Label,
+  Input,
+  Switch,
+  Grid,
+  Row,
+  Col,
+  Thumbnail
+} from 'native-base';
 import styles from './style';
 import LogoIcon from 'app/assets/images/logo.png';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
-import firebase from 'react-native-firebase'
+import firebase from 'react-native-firebase';
 const store = firebase.firestore();
 
 const emailRegEx =
@@ -75,124 +95,147 @@ class LoginScreen extends React.Component {
 
   // Calling the following function will open the FB login dialogue:
   facebookLogin = async () => {
-  try {
-    this.context.showLoading();
+    try {
+      this.context.showLoading();
 
-    const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
+      const result = await LoginManager.logInWithReadPermissions([
+        'public_profile',
+        'email'
+      ]);
 
-    if (result.isCancelled) {
-      // handle this however suites the flow of your app
-      //throw new Error('User cancelled request'); 
-      return
+      if (result.isCancelled) {
+        // handle this however suites the flow of your app
+        //throw new Error('User cancelled request');
+        return;
+      }
+
+      //console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
+
+      // get the access token
+      const data = await AccessToken.getCurrentAccessToken();
+
+      if (!data) {
+        // handle this however suites the flow of your app
+        throw new Error(
+          'Something went wrong obtaining the users access token'
+        );
+      }
+
+      // create a new firebase credential with the token
+      const credential = firebase.auth.FacebookAuthProvider.credential(
+        data.accessToken
+      );
+
+      // login with credential
+      const firebaseUserCredential = await firebase
+        .auth()
+        .signInWithCredential(credential);
+
+      let user = firebaseUserCredential.user;
+
+      let ref = store.collection('users').doc(user.uid);
+      const doc = await ref.get();
+      if (!doc.exists) {
+        //do
+
+        doc.set({
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          age: '',
+          child: false,
+          masterId: '',
+          status: 1
+        });
+      }
+
+      if (!user.email != null) {
+        this.props.navigation.navigate('main');
+      }
+
+      this.context.hideLoading();
+
+      //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
+    } catch (e) {
+      this.context.hideLoading();
+      alert(e.message);
     }
-
-    //console.log(`Login success with permissions: ${result.grantedPermissions.toString()}`);
-
-    // get the access token
-    const data = await AccessToken.getCurrentAccessToken();
-
-    if (!data) {
-      // handle this however suites the flow of your app
-      throw new Error('Something went wrong obtaining the users access token');
-    }
-
-    // create a new firebase credential with the token
-    const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
-
-    // login with credential
-    const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-    
-    let user = firebaseUserCredential.user
-
-    let ref = store.collection('users').doc(user.uid);
-    const doc = await ref.get()
-    if(!doc.exists){
-      //do
-   
-      doc.set( {
-            id: user.uid,
-            name: user.displayName,
-            email: user.email,
-            age: '',
-            child: false,
-            masterId: '',
-            status: 1,
-          });
-      
-      
-    }
-    
-    
-
-    if (!user.email != null) {
-      this.props.navigation.navigate('main');
-    } 
-
-    this.context.hideLoading();
-
-    //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
-  } catch (e) {
-    this.context.hideLoading();
-    alert(e.message);
-  }
-}
+  };
 
   render() {
     return (
-      <ScrollView>
-        <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-          <View style={styles.container}>
-            <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
-            <View style={styles.content}>
-              <TextInput
-                style={styles.input}
+      <Container>
+        <Content
+          padder
+          contentContainerStyle={{ alignItems: 'center', width: '100%' }}
+        >
+          <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
+          {/* <Thumbnail large source={LogoIcon} /> */}
+          <Form style={{ width: '90%' }}>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="user" />
+              <Input
                 placeholder="Email"
                 value={this.state.email}
                 autoCapitalize="none"
                 onChangeText={(value) => this.inputChanged('email', value)}
               />
-              <TextInput
-                style={styles.input}
+            </Item>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="lock" />
+              <Input
                 placeholder="Password"
                 value={this.state.password}
                 autoCapitalize="none"
                 secureTextEntry={true}
                 onChangeText={(value) => this.inputChanged('password', value)}
               />
-              <Button
-                containerStyle={styles.loginBtn}
-                textStyle={styles.login}
-                text="Log In"
-                onPress={this.login}
-              />
-              <Button
-                containerStyle={styles.forgotpswdBtn}
-                textStyle={styles.forgotpswd}
-                text="Forgot password?"
-                onPress={this.goToForgotpswd}
-              />
-              <View style={styles.signupContainer}>
-                <Text style={styles.description}>Do not have an account? </Text>
-                <Button
-                  containerStyle={styles.signupBtn}
-                  textStyle={styles.signup}
-                  text="Sign Up"
-                  onPress={this.goToSignUp}
-                />
-              </View>
-              <View style={styles.signupContainer}>
-                <Text style={styles.description}>Or </Text>
-                <Button
-                  containerStyle={styles.signupBtn}
-                  textStyle={styles.signup}
-                  text="Login with Facebook"
-                  onPress={this.facebookLogin}
-                />
-              </View>
-            </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </ScrollView>
+            </Item>
+            <Grid>
+              <Row>
+                <Col>
+                  <Button
+                    rounded
+                    primary
+                    style={styles.button}
+                    onPress={this.login}
+                  >
+                    <Text style={styles.buttonText}>Log In</Text>
+                  </Button>
+                </Col>
+                <Col>
+                  <Button
+                    rounded
+                    success
+                    style={styles.button}
+                    onPress={this.goToSignUp}
+                  >
+                    <Text style={styles.buttonText}>Sign Up</Text>
+                  </Button>
+                </Col>
+              </Row>
+            </Grid>
+
+            <Button
+              transparent
+              dark
+              onPress={this.goToForgotpswd}
+              style={{alignSelf:'center', marginBottom: 40}}
+            >
+              <Text>Forgot password?</Text>
+            </Button>
+
+            <Button
+              rounded
+              primary
+              style={{alignSelf:'center', width: '100%'}}
+              onPress={this.facebookLogin}
+            >
+              <Text style={styles.buttonText}>Login with Facebook</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }

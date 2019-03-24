@@ -1,9 +1,29 @@
 import React from 'react';
-import { View, Image, TextInput, Text, Linking } from 'react-native';
+import { View, Image, TextInput, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import { AppContext, Button } from 'app/components';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Body,
+  Text,
+  Form,
+  Item,
+  Label,
+  Input,
+  Switch,
+  Grid,
+  Row,
+  Col,
+  Thumbnail
+} from 'native-base';
+import { AppContext } from 'app/components';
 import { AuthController } from 'app/services';
 import { alert, success } from 'app/utils/Alert';
 
@@ -51,34 +71,37 @@ class PasswordResetScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
-        <View style={styles.container}>
+      <Container>
+        <Content
+          padder
+          contentContainerStyle={{ alignItems: 'center', width: '100%' }}
+        >
           <Image source={LogoIcon} style={styles.logo} resizeMode="contain" />
-          <View style={styles.content}>
-            <TextInput
-              style={styles.input}
-              placeholder="Email *"
-              value={this.state.email}
-              autoCapitalize="none"
-              onChangeText={(value) => this.inputChanged('email', value)}
-            />
-            <Button
-              containerStyle={styles.resetBtn}
-              textStyle={styles.reset}
-              text="Reset password"
-              onPress={this.reset}
-            />
-            <View style={styles.loginContainer}>
-              <Text style={styles.description}>Already have an account? </Text>
-              <Button
-                textStyle={styles.login}
-                text="Log In"
-                onPress={this.goToLogin}
+          <Form style={{ width: '90%' }}>
+            <Item rounded style={styles.input}>
+              <Icon type="FontAwesome" name="user" />
+              <Input
+                placeholder="Email"
+                value={this.state.email}
+                autoCapitalize="none"
+                onChangeText={(value) => this.inputChanged('email', value)}
               />
-            </View>
-          </View>
-        </View>
-      </KeyboardAwareScrollView>
+            </Item>
+            <Button rounded primary style={styles.button} onPress={this.reset}>
+              <Text style={styles.buttonText}>Reset password</Text>
+            </Button>
+
+            <Button
+              transparent
+              dark
+              onPress={this.goToLogin}
+              style={{ alignSelf: 'center', marginBottom: 40 }}
+            >
+              <Text>Back to Log In</Text>
+            </Button>
+          </Form>
+        </Content>
+      </Container>
     );
   }
 }
