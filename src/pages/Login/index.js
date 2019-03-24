@@ -11,6 +11,7 @@ import styles from './style';
 import LogoIcon from 'app/assets/images/logo.png';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase'
+const store = firebase.firestore();
 
 const emailRegEx =
   // eslint-disable-next-line max-len
@@ -75,6 +76,8 @@ class LoginScreen extends React.Component {
   // Calling the following function will open the FB login dialogue:
   facebookLogin = async () => {
   try {
+    this.context.showLoading();
+
     const result = await LoginManager.logInWithReadPermissions(['public_profile', 'email']);
 
     if (result.isCancelled) {
@@ -101,12 +104,35 @@ class LoginScreen extends React.Component {
     
     let user = firebaseUserCredential.user
 
+    let ref = store.collection('users').doc(user.uid);
+    const doc = await ref.get()
+    if(!doc.exists){
+      //do
+   
+      doc.set( {
+            id: user.uid,
+            name: user.displayName,
+            email: user.email,
+            age: '',
+            child: false,
+            masterId: '',
+            status: 1,
+          });
+      
+      
+    }
+    
+    
+
     if (!user.email != null) {
       this.props.navigation.navigate('main');
     } 
 
+    this.context.hideLoading();
+
     //console.warn(JSON.stringify(firebaseUserCredential.user.toJSON()))
   } catch (e) {
+    this.context.hideLoading();
     alert(e.message);
   }
 }

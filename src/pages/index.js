@@ -1,24 +1,29 @@
 import React from 'react';
+import { Root } from 'native-base';
+// import { StackNavigator, DrawerNavigator } from "react-navigation";
 import {
-  createStackNavigator,
-  createSwitchNavigator,
-  createBottomTabNavigator,
   createDrawerNavigator,
-  createAppContainer
+  createStackNavigator,
+  createAppContainer,
+  createSwitchNavigator,
+  createBottomTabNavigator
 } from 'react-navigation';
-import { Text, Dimensions } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import LoadingScreen from './Loading';
 import LoginScreen from './Login';
 import ForgotPasswordScreen from './PasswordReset';
 import SignupScreen from './Signup';
-import ProfileScreen from './Profile';
+
+
 import MainScreen from './Main';
+import GoalScreen from './Goal';
+import StatsScreen from './Stats';
+import LeaderBoardScreen from './LeaderBoard';
+import MoreScreen from './More';
 
-import { DrawerMenu } from './../components';
+import UsersScreen from './Users';
+import ProfileScreen from './Profile';
 
-const dm = Dimensions.get('screen');
 
 const AuthNavigator = createStackNavigator(
   {
@@ -38,60 +43,21 @@ const AuthNavigator = createStackNavigator(
   }
 );
 
-const MainTabNavigator = createBottomTabNavigator(
-  {
-    main: MainScreen
-  },
-  {
-    defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: ({ focused, horizontal, tintColor }) => {
-        // custom icon setting.
-      },
-      tabBarLabel: ({ focused, tintColor }) => {
-       // custom label setting.
-      }
-    }),
-    tabBarOptions: {
-      activeTintColor: '#81A8D2',
-      inactiveTintColor: 'gray',
-      safeAreaInset: { bottom: 'never' }
-    }
-  }
-);
-
-const MainNavigator = createDrawerNavigator(
-  {
-    home: MainTabNavigator,
-    profile: ProfileScreen,
-  },
-  {
-    drawerWidth: dm.width * 0.6,
-    // eslint-disable-next-line react/display-name
-    contentComponent: (props) => (
-      <DrawerMenu currentScreen={props.navigation.state.routeName} {...props} />
-    ),
-    initialRouteName: 'home',
-    contentOptions: {
-      activeTintColor: 'white',
-      inactiveTintColor: 'white',
-      labelStyle: {
-        fontSize: 20,
-        fontWeight: 'normal',
-        fontStyle: 'normal',
-        marginLeft: 0,
-        paddingLeft: 0
-      }
-    }
-  }
-);
-
 const MainStackNavigator = createStackNavigator(
   {
-    mainroot: MainNavigator
+    books: MainScreen,
+    goal: GoalScreen,
+    stats: StatsScreen,
+    leaderBoard: LeaderBoardScreen,
+    more: MoreScreen,
+
+    users:  UsersScreen,
+    profile: ProfileScreen,
+
   },
   {
-    headerMode: 'none',
-    initialRouteName: 'mainroot'
+    initialRouteName: 'books',
+    headerMode: 'none'
   }
 );
 

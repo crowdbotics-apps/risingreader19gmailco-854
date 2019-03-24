@@ -1,4 +1,5 @@
 import firebase from 'react-native-firebase';
+import uuid from 'uuid';
 
 const auth = firebase.auth();
 const store = firebase.firestore();
@@ -20,6 +21,7 @@ const signup = async (payload) => {
     await user.user.updateProfile({
       displayName: payload.name
     });
+
     let ref = store.collection('users').doc(user.user.uid);
     await store.runTransaction(async (transaction) => {
       const doc = await transaction.get(ref);
@@ -28,7 +30,11 @@ const signup = async (payload) => {
         transaction.set(ref, {
           id: user.user.uid,
           name: payload.name,
-          email: payload.email
+          email: payload.email,
+          age: '',
+          child: false,
+          masterId: '',
+          status: 1
         });
       }
       return user;
@@ -72,18 +78,107 @@ const logout = async () => {
   }
 };
 
-const updateUser = async ({ displayName, password }) => {
+const updateUser = async ({
+  uid,
+  displayName,
+  password,
+  email,
+  age,
+  child,
+  masterId
+}) => {
   try {
-    await auth.currentUser.updateProfile({
-      displayName: displayName
-    });
-    if (password) {
-      await auth.currentUser.updatePassword(password);
+    if (auth.currentUser.uid === uid) {
+      await auth.currentUser.updateProfile({
+        displayName: displayName
+      });
+      if (password) {
+        await auth.currentUser.updatePassword(password);
+      }
     }
 
-    let ref = store.collection('users').doc(auth.currentUser.uid);
+    let ref = store.collection('users').doc(uid);
     await ref.update({
-      name: displayName
+      name: displayName,
+      age: age,
+      child: child,
+      password: password,
+    });
+
+  } catch (error) {
+    throw error;
+  }
+};
+
+const createUser = async (payload) => {
+  try {
+    // let user = await auth.createUserWithEmailAndPassword(
+    //   payload.email,
+    //   payload.password
+    // );
+
+    // await user.user.sendEmailVerification({
+    //   ios: {
+    //     bundleId: 'com.crowdbotics.risingreaders'
+    //   },
+    //   android: {
+    //     packageName: 'com.crowdbotics.risingreaders'
+    //   }
+    // });
+
+    // await user.user.updateProfile({
+    //   displayName: payload.name
+    // });
+    const uid = uuid();
+    let ref = store.collection('users').doc(uid);
+    await store.runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+
+      if (!doc.exists) {
+        transaction.set(ref, {
+          id: uid,
+          name: payload.name,
+          email: payload.email,
+          age: payload.age,
+          child: payload.child,
+          masterId: payload.masterId,
+          status: 1
+        });
+      }
+      return;
+    });
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUser = async (uid) => {
+  try {
+    let ref = store.collection('users').doc(uid);
+    const userDoc = await ref.get();
+    const userData = userDoc.data();
+    
+    return userData;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteUser = async (uid) => {
+  try {
+    //only master can delete associated user
+
+    let ref = store.collection('users').doc(uid);
+
+    await store.runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+
+      if (doc.exists) {
+        transaction.update(ref, {
+          status: 0
+        });
+      }
     });
   } catch (error) {
     throw error;
@@ -104,5 +199,8 @@ export default {
   logout,
   updateUser,
   sendEmailVerification,
-  forgotPassword
+  forgotPassword,
+  createUser,
+  deleteUser,
+  getUser
 };

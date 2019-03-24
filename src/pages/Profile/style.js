@@ -1,33 +1,24 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  content: {
-    flex: 1,
-    padding: 20
-  },
-  item: {
-    marginBottom: 20
-  },
-  label: {
-    fontSize: 16,
-    color: 'grey',
-    marginLeft: 10,
-    marginBottom: 5
-  },
   input: {
-    alignSelf: 'stretch',
-    height: 50,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    fontSize: 16
+    marginBottom: 15
+  },
+  button: {
+    marginBottom: 15, alignSelf: 'center'
+  },
+  save: {
+    width: 100,
+    textAlign: 'center'
   },
   disabled: {
-    color: 'grey'
+    backgroundColor: 'grey'
+  },
+  switch: {
+    marginLeft: 10,
+  },
+  switchWrapper: {
+    justifyContent: 'center',
+    paddingTop: 15
   }
 });

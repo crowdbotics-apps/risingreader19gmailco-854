@@ -4,40 +4,35 @@ import PropTypes from 'prop-types';
 
 let dm = Dimensions.get('screen');
 
-import { AppContext, Navbar } from 'app/components';
+import { AppContext, Navbar, TabBar } from 'app/components';
 
 import styles from './style';
+
+import {
+  Container,
+  Header,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Text
+} from 'native-base';
+
 
 class MainScreen extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {};
   }
 
-  async componentDidMount() {
-    this.reload();
-  }
-
-  reload = async () => {
-    await this.context.showLoading();
-
-    this.context.hideLoading();
-  };
-
-  leftHandler = () => {
-    this.props.navigation.toggleDrawer();
-  };
-
+ 
   render() {
     return (
-      <View style={styles.container}>
-        <Navbar
-          left="ios-menu"
-          leftHandler={this.leftHandler}
-          title="Dashboard"
-        />
-      </View>
+      <Container>
+        <Navbar title="Books" />
+        <Content />
+        <TabBar tab1={true} navigation={this.props.navigation}/>
+      </Container>
     );
   }
 }

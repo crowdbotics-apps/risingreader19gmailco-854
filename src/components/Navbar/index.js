@@ -1,69 +1,57 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+//import React, { Component } from 'react';
+// import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Button,
+  Icon,
+  Left,
+  Right,
+  Body,
+  Text
+} from 'native-base';
+
 class Navbar extends Component {
   render() {
-    let { left, right, leftHandler, rightHandler, title } = this.props;
+    let { icon, left, right, leftHandler, rightHandler, title } = this.props;
 
     return (
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          {left && (
-            <TouchableOpacity style={styles.btn} onPress={leftHandler}>
-              <Ionicons name={left} style={styles.left} size={24} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <Text style={styles.title}>{title}</Text>
-        <View style={styles.rightContainer}>
-          {right && (
-            <TouchableOpacity style={styles.btn} onPress={rightHandler}>
-              <Text style={styles.right}>{right}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
+      <Header>
+        {left ? (
+          <Left>
+            <Button transparent onPress={leftHandler}>
+              <Icon name={left} />
+            </Button>
+          </Left>
+        ) : (
+          <Left />
+        )}
+
+        <Body>
+          <Title>{title}</Title>
+        </Body>
+        {right ? (
+          <Right>
+            <Button transparent onPress={rightHandler}>
+              <Icon name={right} type="FontAwesome5"/>
+            </Button>
+          </Right>
+        ) : (
+          <Right />
+        )}
+      </Header>
     );
   }
 }
 
-let styles = StyleSheet.create({
-  container: {
-    height: 44,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: '#ddd',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15
-  },
-  leftContainer: {
-    width: 60,
-    alignItems: 'flex-start'
-  },
-  btn: {
-    padding: 5
-  },
-  left: {
-    fontSize: 22
-  },
-  title: {
-    flex: 1,
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center'
-  },
-  rightContainer: {
-    width: 60,
-    alignItems: 'flex-end'
-  },
-  right: {
-    fontSize: 14,
-    fontWeight: '600'
-  }
-});
+let styles = StyleSheet.create({});
 
 Navbar.propTypes = {
   left: PropTypes.string,

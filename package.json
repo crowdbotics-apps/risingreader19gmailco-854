@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "moment": "^2.24.0",
+    "native-base": "^2.12.1",
     "prop-types": "^15.6.2",
     "react": "16.6.3",
     "react-native": "^0.58.6",
@@ -46,6 +47,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-simple-radio-button": "^2.7.3",
     "react-native-splash-screen": "^3.2.0",
+    "react-native-uuid": "^1.4.9",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.1.4"
   },
