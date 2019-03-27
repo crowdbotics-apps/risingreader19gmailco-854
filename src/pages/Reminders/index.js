@@ -3,7 +3,7 @@ import { View, Dimensions, TouchableOpacity, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 
 let dm = Dimensions.get('screen');
-import { alert, success } from 'app/utils/Alert';
+
 import { AppContext, Navbar, TabBar } from 'app/components';
 
 import styles from './style';
@@ -93,11 +93,6 @@ class UsersScreen extends Component {
 
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
-  }
-
-  componentWillMount(){
-    if(this.unsubscribe)
-      this.unsubscribe()
   }
 
   leftHandler = () => {

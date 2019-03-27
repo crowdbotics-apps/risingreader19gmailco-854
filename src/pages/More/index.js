@@ -35,19 +35,19 @@ class MoreScreen extends Component {
   }
 
   toggleUsers = () => {
-      this.props.navigation.navigate('users')
-  }
+    this.props.navigation.navigate('users');
+  };
 
   toggleSignOut = async () => {
-      try {
-        await AuthController.logout()
-        this.props.navigation.navigate('auth')
-      } catch (error) {
-        alert(error.message);
-      }
-    
+    try {
+      await AuthController.logout();
+      this.props.navigation.navigate('auth');
+    } catch (error) {
+      alert(error.message);
+    }
+
     //this.props.navigation.navigate('loading')
-}
+  };
 
   render() {
     return (
@@ -57,7 +57,10 @@ class MoreScreen extends Component {
           <Separator bordered noTopBorder />
           <ListItem icon>
             <Left>
-              <Button style={{ backgroundColor: '#007AFF' }} onPress={this.toggleUsers}>
+              <Button
+                style={{ backgroundColor: '#007AFF' }}
+                onPress={this.toggleUsers}
+              >
                 <Icon active type="FontAwesome" name="users" />
               </Button>
             </Left>
@@ -67,7 +70,13 @@ class MoreScreen extends Component {
               </Button>
             </Body>
             <Right>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" style={{ color: '#007AFF' }}/>}
+              {Platform.OS === 'ios' && (
+                <Icon
+                  active
+                  name="arrow-forward"
+                  style={{ color: '#007AFF' }}
+                />
+              )}
             </Right>
           </ListItem>
 
@@ -83,7 +92,13 @@ class MoreScreen extends Component {
               </Button>
             </Body>
             <Right>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" style={{ color: '#007AFF' }}/>}
+              {Platform.OS === 'ios' && (
+                <Icon
+                  active
+                  name="arrow-forward"
+                  style={{ color: '#007AFF' }}
+                />
+              )}
             </Right>
           </ListItem>
 
@@ -99,7 +114,13 @@ class MoreScreen extends Component {
               </Button>
             </Body>
             <Right>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" style={{ color: '#007AFF' }}/>}
+              {Platform.OS === 'ios' && (
+                <Icon
+                  active
+                  name="arrow-forward"
+                  style={{ color: '#007AFF' }}
+                />
+              )}
             </Right>
           </ListItem>
 
@@ -115,7 +136,13 @@ class MoreScreen extends Component {
               </Button>
             </Body>
             <Right>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" style={{ color: '#007AFF' }}/>}
+              {Platform.OS === 'ios' && (
+                <Icon
+                  active
+                  name="arrow-forward"
+                  style={{ color: '#007AFF' }}
+                />
+              )}
             </Right>
           </ListItem>
 
@@ -126,12 +153,18 @@ class MoreScreen extends Component {
               </Button>
             </Left>
             <Body>
-              <Button transparent onPress={this.toggleSignOut}> 
+              <Button transparent onPress={this.toggleSignOut}>
                 <Text>Sign Out</Text>
               </Button>
             </Body>
             <Right>
-              {Platform.OS === 'ios' && <Icon active name="arrow-forward" style={{ color: '#007AFF' }}/>}
+              {Platform.OS === 'ios' && (
+                <Icon
+                  active
+                  name="arrow-forward"
+                  style={{ color: '#007AFF' }}
+                />
+              )}
             </Right>
           </ListItem>
 

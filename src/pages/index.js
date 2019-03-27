@@ -23,6 +23,7 @@ import MoreScreen from './More';
 
 import UsersScreen from './Users';
 import ProfileScreen from './Profile';
+import GoalsScreen from './Goals';
 
 
 const AuthNavigator = createStackNavigator(
@@ -54,6 +55,7 @@ const MainStackNavigator = createStackNavigator(
     users:  UsersScreen,
     profile: ProfileScreen,
 
+    goals: GoalsScreen,
   },
   {
     initialRouteName: 'books',

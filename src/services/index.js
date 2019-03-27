@@ -1,3 +1,3 @@
 import AuthController from './Authentication';
-
-export { AuthController };
+import Database from './database';
+export { AuthController, Database };

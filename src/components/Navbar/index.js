@@ -20,10 +20,10 @@ import {
 
 class Navbar extends Component {
   render() {
-    let { icon, left, right, leftHandler, rightHandler, title } = this.props;
+    let { icon, left, right, leftHandler, rightHandler, title, hasTabs } = this.props;
 
     return (
-      <Header>
+      <Header hasTabs={hasTabs}>
         {left ? (
           <Left>
             <Button transparent onPress={leftHandler}>

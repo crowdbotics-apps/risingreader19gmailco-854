@@ -31,6 +31,7 @@ const signup = async (payload) => {
           id: user.user.uid,
           name: payload.name,
           email: payload.email,
+          password: payload.password,
           age: '',
           child: false,
           masterId: '',
@@ -72,7 +73,10 @@ const login = async (payload) => {
 
 const logout = async () => {
   try {
-    await auth.signOut();
+    //TODO:
+     // await auth.signOut();
+ 
+      
   } catch (error) {
     throw error;
   }
@@ -139,6 +143,7 @@ const createUser = async (payload) => {
           id: uid,
           name: payload.name,
           email: payload.email,
+          password: payload.password,
           age: payload.age,
           child: payload.child,
           masterId: payload.masterId,

@@ -17,11 +17,15 @@ class LoadingScreen extends Component {
   componentDidMount() {
     this.context.showLoading();
     this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
-      this.context.hideLoading();
-      if (user) {
-        this.props.navigation.navigate('main');
-      } else {
-        this.props.navigation.navigate('auth');
+      try {
+        this.context.hideLoading();
+        if (user) {
+          this.props.navigation.navigate('main');
+        } else {
+          this.props.navigation.navigate('auth');
+        }
+      } catch (error) {
+        alert(error.message);
       }
     });
   }
