@@ -89,7 +89,8 @@ const updateUser = async ({
   email,
   age,
   child,
-  masterId
+  masterId,
+  dob
 }) => {
   try {
     if (auth.currentUser.uid === uid) {
@@ -107,6 +108,7 @@ const updateUser = async ({
       age: age,
       child: child,
       password: password,
+      dob: dob,
     });
 
   } catch (error) {
@@ -147,7 +149,8 @@ const createUser = async (payload) => {
           age: payload.age,
           child: payload.child,
           masterId: payload.masterId,
-          status: 1
+          status: 1,
+          dob: payload.dob,
         });
       }
       return;

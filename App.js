@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, AsyncStorage } from 'react-native';
 
 import AppNavigator from 'app/pages';
 import { AppContext, LoadingView } from 'app/components';

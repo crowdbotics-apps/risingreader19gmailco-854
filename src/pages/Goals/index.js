@@ -102,7 +102,7 @@ class GoalsScreen extends Component {
   };
 
   editHandler = (id, masterId) => {
-    this.props.navigation.navigate('profile', { userId: id, masterId });
+    
   };
 
   deleteHandler = (id) => {

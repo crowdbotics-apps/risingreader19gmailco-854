@@ -20,6 +20,10 @@ platform :ios do
     
   end
 
+  lane :up do
+upload_to_testflight
+  end
+
 end
 
 platform :android do

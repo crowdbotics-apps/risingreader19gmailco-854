@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions } from 'react-native';
-import moment from 'moment';
+import moment, { lang } from 'moment';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 import { alert, success } from 'app/utils/Alert';
@@ -44,6 +44,7 @@ class GoalScreen extends Component {
     super(props);
     this.state = {
       seg: 1,
+
       value: 0,
       hasGoal: false,
       visible: false,
@@ -52,6 +53,7 @@ class GoalScreen extends Component {
       segGoal: 1,
       number: '',
       goal: null,
+      age: '',
 
       //seg_Y: 1,
       value_Y: 0,
@@ -61,7 +63,8 @@ class GoalScreen extends Component {
       segGoal_Y: 1,
       number_Y: '',
       goal_Y: null,
-      visible_Y: false
+      visible_Y: false,
+      age_Y: ''
     };
 
     this.goalRef = firebase
@@ -153,12 +156,11 @@ class GoalScreen extends Component {
   };
 
   componentDidMount() {
-    
     this.unsubscribe = this.goalRef.onSnapshot(this.onGoalUpdate);
     this.unsubscribe_Y = this.goalRef_Y.onSnapshot(this.onGoalUpdate);
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
     if (this.unsubscribe) this.unsubscribe();
     if (this.unsubscribe_Y) this.unsubscribe_Y();
   }
@@ -247,7 +249,7 @@ class GoalScreen extends Component {
     }
     try {
       this.context.showLoading();
-      this.setState({ visible: false });
+      this.setState({ visible: false});
       const { goal } = this.state;
 
       if (!goal) {
@@ -273,6 +275,7 @@ class GoalScreen extends Component {
       }
 
       this.context.hideLoading();
+      this.setState({ visiblePlanGenerator: true });
     } catch (error) {
       this.context.hideLoading();
       alert(error.message);
@@ -413,7 +416,7 @@ class GoalScreen extends Component {
           />
         </Item>
         <Button rounded primary style={styles.button} onPress={this.saveGoal}>
-          <Text style={styles.buttonText}>SAVE GOAL</Text>
+          <Text style={styles.buttonSaveText}>SAVE GOAL</Text>
         </Button>
       </Content>
     );
@@ -499,11 +502,68 @@ class GoalScreen extends Component {
             }}
           />
         </Item>
+
         <Button rounded primary style={styles.button} onPress={this.saveGoal_Y}>
-          <Text style={styles.buttonText}>SAVE GOAL</Text>
+          <Text style={styles.buttonSaveText}>SAVE GOAL</Text>
         </Button>
       </Content>
     );
+  };
+
+  renderPlanGenerator = () => {
+    return (
+      <Content contentContainerStyle={{ alignItems: 'center' }}>
+        <Icon
+          type="FontAwesome5"
+          name="book-reader"
+          style={{ fontSize: 60, color: '#007AFF' }}
+        />
+
+        <Label style={{ marginVertical: 20 }}>generate a reading plan</Label>
+
+        <Item rounded style={{ marginBottom: 20 }}>
+          <Input
+            placeholder="Enter your child age"
+            autoCapitalize="none"
+            keyboardType="numeric"
+            value={this.state.age }
+            onChangeText={this.inputChanged('age')}
+          />
+        </Item>
+        <Button
+          rounded
+          primary
+          style={styles.button}
+          onPress={this.generatePlan}
+        >
+          <Text style={styles.buttonSaveText}>GENERATE PLAN</Text>
+        </Button>
+      </Content>
+    );
+  };
+
+  generatePlan = async () => {
+    try {
+      this.setState({ visiblePlanGenerator: false });
+      this.context.showLoading();
+      await Database.generatePlan({
+        number: this.state.number,
+        segGoal: this.state.segGoal,
+        segTime: this.state.seg,
+        start: this.state.start,
+        end: this.state.end,
+        age: this.state.age,
+        uid: firebase.auth().currentUser.uid,
+        goalId: this.state.goal.id,
+      });
+
+      
+      this.context.hideLoading();
+      // success('A plan has been generated. Now your child is able to see it.')
+    } catch (error) {
+      this.context.hideLoading();
+      alert(error);
+    }
   };
 
   renderMonthly = () => {
@@ -565,7 +625,7 @@ class GoalScreen extends Component {
             rounded
             primary
             style={[styles.button, { marginTop: 50, marginBottom: 50 }]}
-            onPress={this.toggleGoals}
+            onPress={this.toggleGoal}
           >
             <Icon type="FontAwesome5" name="trophy" />
             <Text style={styles.buttonText}>Set a goal</Text>
@@ -662,6 +722,7 @@ class GoalScreen extends Component {
             style={[styles.button, { marginTop: 50, marginBottom: 50 }]}
             onPress={this.toggleGoal_Y}
           >
+          <Icon type="FontAwesome5" name="trophy" />
             <Text style={styles.buttonText}>Set a goal</Text>
           </Button>
         )}
@@ -687,6 +748,7 @@ class GoalScreen extends Component {
       </Content>
     );
   };
+
   render() {
     return (
       <Container style={{ width: '100%' }}>
@@ -730,6 +792,21 @@ class GoalScreen extends Component {
             height="50%"
           >
             {this.renderSetGoal_Y()}
+          </Overlay>
+        )}
+
+        {this.state.visiblePlanGenerator && (
+          <Overlay
+            isVisible
+            onBackdropPress={() =>
+              this.setState({ visiblePlanGenerator: false })
+            }
+            windowBackgroundColor="rgba(0, 0, 0, .7)"
+            overlayBackgroundColor="white"
+            width="80%"
+            height="35%"
+          >
+            {this.renderPlanGenerator()}
           </Overlay>
         )}
 

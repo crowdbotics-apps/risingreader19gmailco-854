@@ -94,12 +94,11 @@ export default StyleSheet.create({
     marginBottom: 15
   },
   button: {
-    marginBottom: 15, alignSelf: 'center', width: 220,justifyContent:'center'
+    marginBottom: 15, alignSelf: 'center', width: 220
   },
   buttonText: {
-    //width: '100%',
-    textAlign: 'left',
-    
+    width: '100%',
+    textAlign: 'left'
   },
   buttonSaveText: {
     width: '100%',

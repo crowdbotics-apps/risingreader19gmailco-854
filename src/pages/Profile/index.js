@@ -3,7 +3,7 @@ import { View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'react-native-firebase';
-
+import moment from 'moment';
 import { AppContext, Navbar } from 'app/components';
 import { AuthController } from 'app/services';
 import { alert, success } from 'app/utils/Alert';
@@ -26,7 +26,8 @@ import {
   Switch,
   Grid,
   Row,
-  Col
+  Col,
+  DatePicker
 } from 'native-base';
 
 import styles from './style';
@@ -43,16 +44,16 @@ class ProfileScreen extends Component {
       confirmpswd: '',
       age: '',
       child: false,
-      masterId: ''
+      masterId: '',
+      dob: ''
     };
 
     this.props.navigation.addListener('didFocus', this.onFocus);
   }
 
   onFocus = async (payload) => {
+    this.context.showLoading();
     const userId = this.props.navigation.getParam('userId', 'NEW');
-
-    
 
     if (userId == 'NEW') {
     } else {
@@ -67,9 +68,10 @@ class ProfileScreen extends Component {
         age: user.age,
         child: user.child,
         masterId: user.masterId,
+        dob: user.dob
       });
-
     }
+    this.context.hideLoading();
   };
 
   leftHandler = () => {
@@ -94,10 +96,10 @@ class ProfileScreen extends Component {
           email: this.state.email,
           age: this.state.age,
           child: this.state.child,
-          masterId: firebase.auth().currentUser.uid
+          masterId: firebase.auth().currentUser.uid,
+          dob: this.state.dob
         });
       } else {
-        
         await AuthController.updateUser({
           uid: this.state.uid,
           displayName: this.state.displayName,
@@ -106,23 +108,24 @@ class ProfileScreen extends Component {
           age: this.state.age,
           child: this.state.child,
           masterId: this.state.masterId,
+          dob: this.state.dob
         });
       }
 
       this.context.hideLoading();
-      if (firebase.auth().currentUser.uid === userId){
-        success('Please log in again.')
+      if (firebase.auth().currentUser.uid === userId) {
+        success('Please log in again.');
         this.props.navigation.navigate('auth');
-      }
-      else
-        this.props.navigation.goBack();
+      } else this.props.navigation.goBack();
     } catch (error) {
       this.context.hideLoading();
       alert(error.message);
     }
   };
 
-  switchHandler = () => {};
+  switchHandler = () => {
+    this.props.navigation.navigate('c_books');
+  };
 
   validate = () => {
     let { displayName, password, confirmpswd } = this.state;
@@ -153,8 +156,13 @@ class ProfileScreen extends Component {
     this.setState({ child: value });
   };
 
+  setDOBDate = (newDate) => {
+    this.setState({ dob: newDate });
+  };
+
   render() {
     const userId = this.props.navigation.getParam('userId', 'NEW');
+    const masterId = this.props.navigation.getParam('masterId', '');
 
     return (
       <Container>
@@ -171,42 +179,84 @@ class ProfileScreen extends Component {
                 onChangeText={this.inputChanged('displayName')}
               />
             </Item>
-            <Item
-              rounded
-              style={
-                userId != 'NEW' ? [styles.input, styles.disabled] : styles.input
-              }
-            >
-              <Input
-                placeholder="Email"
-                autoCapitalize="none"
-                editable={userId == 'NEW'}
-                value={this.state.email}
-                onChangeText={this.inputChanged('email')}
-              />
-            </Item>
-            <Item rounded style={styles.input}>
-              <Input
-                placeholder="Password"
-                autoCapitalize="none"
-                secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={this.inputChanged('password')}
-              />
-            </Item>
-            <Item rounded style={styles.input}>
-              <Input
-                placeholder="Confirm Password"
-                autoCapitalize="none"
-                secureTextEntry={true}
-                value={this.state.confirmpswd}
-                onChangeText={this.inputChanged('confirmpswd')}
-              />
-            </Item>
+
+            {userId != 'NEW' && masterId == '' ? (
+              <View>
+                <Item
+                  rounded
+                  style={
+                    userId != 'NEW'
+                      ? [styles.input, styles.disabled]
+                      : styles.input
+                  }
+                >
+                  <Input
+                    placeholder="Email"
+                    autoCapitalize="none"
+                    editable={userId == 'NEW'}
+                    value={this.state.email}
+                    onChangeText={this.inputChanged('email')}
+                  />
+                </Item>
+                <Item rounded style={styles.input}>
+                  <Input
+                    placeholder="Password"
+                    autoCapitalize="none"
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    onChangeText={this.inputChanged('password')}
+                  />
+                </Item>
+                <Item rounded style={styles.input}>
+                  <Input
+                    placeholder="Confirm Password"
+                    autoCapitalize="none"
+                    secureTextEntry={true}
+                    value={this.state.confirmpswd}
+                    onChangeText={this.inputChanged('confirmpswd')}
+                  />
+                </Item>
+              </View>
+            ) : (
+              <React.Fragment />
+            )}
+
             <Grid>
               <Row>
                 <Col>
-                  <Item rounded style={styles.input}>
+                  <Item
+                    rounded
+                    style={{
+                      width: '99%',
+                      paddingVertical: 5,
+                      marginBottom: 20
+                    }}
+                  >
+                    <DatePicker
+                      defaultDate={new Date(2000, 1, 1)}
+                      minimumDate={new Date(1900, 1, 1)}
+                      maximumDate={new Date(2100, 12, 31)}
+                      locale={'en'}
+                      timeZoneOffsetInMinutes={undefined}
+                      modalTransparent={false}
+                      animationType={'fade'}
+                      androidMode={'default'}
+                      placeHolderText={
+                        this.state.dob
+                          ? moment(this.state.dob).format('LL')
+                          : 'Date of Birth'
+                      }
+                      //textStyle={{ color: "green" }}
+                      //placeHolderTextStyle={{ color: '#d3d3d3' }}
+                      onDateChange={this.setDOBDate}
+                      disabled={false}
+                      formatChosenDate={(date) => {
+                        return moment(date).format('LL');
+                      }}
+                      //value={this.state.start}
+                    />
+                  </Item>
+                  {/* <Item rounded style={styles.input}>
                     <Input
                       placeholder="Age"
                       autoCapitalize="none"
@@ -214,7 +264,7 @@ class ProfileScreen extends Component {
                       keyboardType="numeric"
                       onChangeText={this.inputChanged('age')}
                     />
-                  </Item>
+                  </Item> */}
                 </Col>
                 <Col>
                   <Row style={styles.switchWrapper}>
@@ -236,7 +286,8 @@ class ProfileScreen extends Component {
               style={styles.button}
               onPress={this.saveHandler}
             >
-              <Text style={styles.save}>Save</Text>
+              {/* <Icon type="FontAwesome5" name="award" /> */}
+              <Text style={styles.buttonText}>Save</Text>
             </Button>
             <Button
               rounded
@@ -244,7 +295,8 @@ class ProfileScreen extends Component {
               style={styles.button}
               onPress={this.switchHandler}
             >
-              <Text>Switch to this user</Text>
+              {/* <Icon type="FontAwesome5" name="award" /> */}
+              <Text style={styles.buttonText}>Switch to this user</Text>
             </Button>
           </Form>
         </Content>

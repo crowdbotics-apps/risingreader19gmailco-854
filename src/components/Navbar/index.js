@@ -25,16 +25,16 @@ class Navbar extends Component {
     return (
       <Header hasTabs={hasTabs}>
         {left ? (
-          <Left>
+          <Left style={{flex: 1}}>
             <Button transparent onPress={leftHandler}>
               <Icon name={left} />
             </Button>
           </Left>
         ) : (
-          <Left />
+          <Left style={{flex: 1}}/>
         )}
 
-        <Body>
+        <Body style={{flex: 1, alignItems: 'center'}}>
           <Title>{title}</Title>
         </Body>
         {right ? (
@@ -44,7 +44,7 @@ class Navbar extends Component {
             </Button>
           </Right>
         ) : (
-          <Right />
+          <Right style={{flex: 1}}/>
         )}
       </Header>
     );

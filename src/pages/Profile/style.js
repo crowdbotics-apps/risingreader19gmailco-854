@@ -5,10 +5,14 @@ export default StyleSheet.create({
     marginBottom: 15
   },
   button: {
-    marginBottom: 15, alignSelf: 'center'
+    marginBottom: 15, alignSelf: 'center', width: 220
   },
   save: {
     width: 100,
+    textAlign: 'center'
+  },
+  buttonText: {
+    width: '100%',
     textAlign: 'center'
   },
   disabled: {

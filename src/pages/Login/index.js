@@ -106,6 +106,7 @@ class LoginScreen extends React.Component {
       if (result.isCancelled) {
         // handle this however suites the flow of your app
         //throw new Error('User cancelled request');
+        this.context.hideLoading();
         return;
       }
 

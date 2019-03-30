@@ -1,7 +1,8 @@
 import React from 'react';
 
 const AppContext = React.createContext({
-  loading: false
+  loading: false,
+  activeChild: {}
 });
 
 export default AppContext;

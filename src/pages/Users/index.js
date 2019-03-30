@@ -95,7 +95,7 @@ class UsersScreen extends Component {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
-  componentWillMount(){
+  componentWillUnmount(){
     if(this.unsubscribe)
       this.unsubscribe()
   }

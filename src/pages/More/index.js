@@ -55,7 +55,7 @@ class MoreScreen extends Component {
         <Navbar title="More" />
         <Content>
           <Separator bordered noTopBorder />
-          <ListItem icon>
+          <ListItem icon onPress={this.toggleUsers}>
             <Left>
               <Button
                 style={{ backgroundColor: '#007AFF' }}
@@ -146,7 +146,7 @@ class MoreScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon>
+          <ListItem icon onPress={this.toggleSignOut}>
             <Left>
               <Button style={{ backgroundColor: '#007AFF' }}>
                 <Icon active type="FontAwesome5" name="sign-out-alt" />
