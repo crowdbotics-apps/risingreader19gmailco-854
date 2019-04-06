@@ -14,7 +14,6 @@ import LoginScreen from './Login';
 import ForgotPasswordScreen from './PasswordReset';
 import SignupScreen from './Signup';
 
-
 import MainScreen from './Main';
 import GoalScreen from './Goal';
 import StatsScreen from './Stats';
@@ -30,7 +29,9 @@ import C_UserScreen from './C_User';
 import UsersScreen from './Users';
 import ProfileScreen from './Profile';
 import GoalsScreen from './Goals';
-
+import DonationScreen from './Donation';
+import PremiumScreen from './Premium';
+import ParentingScreen from './Parenting';
 
 const AuthNavigator = createStackNavigator(
   {
@@ -64,10 +65,13 @@ const MainStackNavigator = createStackNavigator(
     c_leaderBoard: C_LeaderBoardScreen,
     c_user: C_UserScreen,
 
-    users:  UsersScreen,
+    users: UsersScreen,
     profile: ProfileScreen,
+    donation: DonationScreen,
+    premium: PremiumScreen,
+    parenting: ParentingScreen,
 
-    goals: GoalsScreen,
+    goals: GoalsScreen
   },
   {
     initialRouteName: 'books',

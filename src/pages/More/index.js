@@ -28,6 +28,7 @@ import {
 } from 'native-base';
 import { AuthController } from 'app/services';
 import firebase from 'react-native-firebase';
+//import console = require('console');
 
 class MoreScreen extends Component {
   constructor(props) {
@@ -36,6 +37,18 @@ class MoreScreen extends Component {
 
   toggleUsers = () => {
     this.props.navigation.navigate('users');
+  };
+
+  toggleDonation = () => {
+    this.props.navigation.navigate('donation');
+  };
+
+  togglePremium = () => {
+    this.props.navigation.navigate('premium');
+  };
+
+  toggleParenting = () => {
+    this.props.navigation.navigate('parenting');
   };
 
   toggleSignOut = async () => {
@@ -80,14 +93,17 @@ class MoreScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon>
-            <Left>
-              <Button style={{ backgroundColor: '#007AFF' }}>
+          <ListItem icon onPress={this.toggleDonation}>
+            <Left onPress={this.toggleDonation}>
+              <Button
+                style={{ backgroundColor: '#007AFF' }}
+                onPress={this.toggleDonation}
+              >
                 <Icon active type="FontAwesome5" name="donate" />
               </Button>
             </Left>
             <Body>
-              <Button transparent>
+              <Button transparent onPress={this.toggleDonation}>
                 <Text>Donation</Text>
               </Button>
             </Body>
@@ -102,14 +118,17 @@ class MoreScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon>
+          <ListItem icon onPress={this.togglePremium}>
             <Left>
-              <Button style={{ backgroundColor: '#007AFF' }}>
+              <Button
+                style={{ backgroundColor: '#007AFF' }}
+                onPress={this.togglePremium}
+              >
                 <Icon active type="FontAwesome5" name="arrow-alt-circle-up" />
               </Button>
             </Left>
             <Body>
-              <Button transparent>
+              <Button transparent onPress={this.togglePremium}>
                 <Text>Premium Plan</Text>
               </Button>
             </Body>
@@ -124,14 +143,17 @@ class MoreScreen extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon>
+          <ListItem icon onPress={this.toggleParenting}>
             <Left>
-              <Button style={{ backgroundColor: '#007AFF' }}>
+              <Button
+                style={{ backgroundColor: '#007AFF' }}
+                onPress={this.toggleParenting}
+              >
                 <Icon active type="FontAwesome5" name="newspaper" />
               </Button>
             </Left>
             <Body>
-              <Button transparent>
+              <Button transparent onPress={this.toggleParenting}>
                 <Text>Parenting Articles</Text>
               </Button>
             </Body>

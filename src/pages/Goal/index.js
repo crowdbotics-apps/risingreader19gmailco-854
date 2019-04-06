@@ -34,7 +34,9 @@ import {
   Item,
   Grid,
   Col,
-  Row
+  Row,
+  Picker,
+  Form
 } from 'native-base';
 import { Slider, Overlay } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -54,6 +56,7 @@ class GoalScreen extends Component {
       number: '',
       goal: null,
       age: '',
+      count: '', //interval breakdown
 
       //seg_Y: 1,
       value_Y: 0,
@@ -65,6 +68,8 @@ class GoalScreen extends Component {
       goal_Y: null,
       visible_Y: false,
       age_Y: ''
+
+      //visiblePlanGenerator: true
     };
 
     this.goalRef = firebase
@@ -181,6 +186,12 @@ class GoalScreen extends Component {
     this.setState({ end_Y: newDate });
   };
 
+  onValueChange = (value: string) => {
+    this.setState({
+      age: value
+    });
+  };
+
   inputChanged = (key) => (text) => {
     this.setState({ [key]: text });
   };
@@ -249,7 +260,7 @@ class GoalScreen extends Component {
     }
     try {
       this.context.showLoading();
-      this.setState({ visible: false});
+      this.setState({ visible: false });
       const { goal } = this.state;
 
       if (!goal) {
@@ -521,13 +532,45 @@ class GoalScreen extends Component {
 
         <Label style={{ marginVertical: 20 }}>generate a reading plan</Label>
 
-        <Item rounded style={{ marginBottom: 20 }}>
+        <Item
+          picker
+          style={{
+            marginBottom: 20,
+            width: '98%',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Picker
+            mode="dropdown"
+            iosHeader="Select your child age"
+            iosIcon={<Icon name="arrow-down" />}
+            style={{
+              width: '70%',
+              alignSelf: 'center',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+            textStyle={{ paddingLeft: 55 }}
+            selectedValue={this.state.age}
+            placeholder="Select your child age"
+            onValueChange={this.onValueChange.bind(this)}
+          >
+            <Picker.Item label="4-6" value="5" />
+            <Picker.Item label="6-8" value="7" />
+            <Picker.Item label="8-10" value="9" />
+            <Picker.Item label="10-12" value="11" />
+            <Picker.Item label="12+" value="13" />
+          </Picker>
+        </Item>
+
+        <Item rounded style={{ marginBottom: 20, alignItems: 'center' }}>
           <Input
-            placeholder="Enter your child age"
+            placeholder="Enter interval breakdown"
             autoCapitalize="none"
             keyboardType="numeric"
-            value={this.state.age }
-            onChangeText={this.inputChanged('age')}
+            value={this.state.count}
+            onChangeText={this.inputChanged('count')}
           />
         </Item>
         <Button
@@ -555,9 +598,9 @@ class GoalScreen extends Component {
         age: this.state.age,
         uid: firebase.auth().currentUser.uid,
         goalId: this.state.goal.id,
+        count: this.state.count
       });
 
-      
       this.context.hideLoading();
       // success('A plan has been generated. Now your child is able to see it.')
     } catch (error) {
@@ -722,7 +765,7 @@ class GoalScreen extends Component {
             style={[styles.button, { marginTop: 50, marginBottom: 50 }]}
             onPress={this.toggleGoal_Y}
           >
-          <Icon type="FontAwesome5" name="trophy" />
+            <Icon type="FontAwesome5" name="trophy" />
             <Text style={styles.buttonText}>Set a goal</Text>
           </Button>
         )}
@@ -804,7 +847,7 @@ class GoalScreen extends Component {
             windowBackgroundColor="rgba(0, 0, 0, .7)"
             overlayBackgroundColor="white"
             width="80%"
-            height="35%"
+            height="40%"
           >
             {this.renderPlanGenerator()}
           </Overlay>
