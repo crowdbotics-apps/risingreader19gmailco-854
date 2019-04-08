@@ -45,7 +45,9 @@ class ProfileScreen extends Component {
       age: '',
       child: false,
       masterId: '',
-      dob: ''
+      dob: '',
+      plan: 0,
+      expired: ''
     };
 
     this.props.navigation.addListener('didFocus', this.onFocus);
@@ -68,7 +70,8 @@ class ProfileScreen extends Component {
         age: user.age,
         child: user.child,
         masterId: user.masterId,
-        dob: user.dob
+        dob: user.dob,
+        plan: user.plan
       });
     }
     this.context.hideLoading();
@@ -280,6 +283,11 @@ class ProfileScreen extends Component {
               </Row>
             </Grid>
 
+            <Label style={{ marginBottom: 30, paddingHorizontal: 10 }}>
+              {this.state.plan == 0
+                ? 'You are using Free plan'
+                : 'You are Premium User ' + this.state.expired}
+            </Label>
             <Button
               rounded
               primary

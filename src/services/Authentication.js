@@ -35,7 +35,8 @@ const signup = async (payload) => {
           age: '',
           child: false,
           masterId: '',
-          status: 1
+          status: 1,
+          plan: 0 //0: free, 1: monthly, 2: yearly, 3: lifetime
         });
       }
       return user;
@@ -74,9 +75,7 @@ const login = async (payload) => {
 const logout = async () => {
   try {
     //TODO:
-     // await auth.signOut();
- 
-      
+    // await auth.signOut();
   } catch (error) {
     throw error;
   }
@@ -108,9 +107,8 @@ const updateUser = async ({
       age: age,
       child: child,
       password: password,
-      dob: dob,
+      dob: dob
     });
-
   } catch (error) {
     throw error;
   }
@@ -151,6 +149,7 @@ const createUser = async (payload) => {
           masterId: payload.masterId,
           status: 1,
           dob: payload.dob,
+          plan: 0 //0: free, 1: monthly, 2: yearly, 3: lifetime
         });
       }
       return;
@@ -166,7 +165,7 @@ const getUser = async (uid) => {
     let ref = store.collection('users').doc(uid);
     const userDoc = await ref.get();
     const userData = userDoc.data();
-    
+
     return userData;
   } catch (error) {
     throw error;

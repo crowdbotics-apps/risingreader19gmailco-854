@@ -68,16 +68,19 @@ class DonationScreen extends Component {
         />
 
         <Content padder>
-          <H2>Give us a hand to get the life better</H2>
-          <H3>By signing up First Book via link below</H3>
+          <H2 style={{ textAlign: 'center', marginTop: 30 }}>
+            Give us a hand to get the life better
+          </H2>
+          {/* <H3 style={{ textAlign: 'center', marginTop: 30 }}>By signing up First Book via link below</H3> */}
           <Button
-            transparent
+            primary
             onPress={this.gotoURL}
-            //style={{ marginTop: 5, marginLeft: -25 }}
+            style={{ marginTop: 30, alignSelf: 'center' }}
           >
-            <H3>First Book</H3>
+            <Text>Sign Up On First Book</Text>
           </Button>
-          <H3>Charity List:</H3>
+
+          <Text style={{ marginTop: 50 }}>Supporting Charity List:</Text>
           <Text>1. Pajama Program</Text>
           <Text>2. First Book</Text>
           <Text>3. Kids Need to Read</Text>

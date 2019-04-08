@@ -4,6 +4,13 @@ import { StyleSheet, SafeAreaView, AsyncStorage } from 'react-native';
 import AppNavigator from 'app/pages';
 import { AppContext, LoadingView } from 'app/components';
 import SplashScreen from 'react-native-splash-screen';
+import stripe from 'tipsi-stripe';
+
+stripe.setOptions({
+  publishableKey: 'pk_test_P1UBQEaw3sE3nPXyl2zDC8pD',
+  merchantId: '', // Optional
+  androidPayMode: 'test' // Android only
+});
 
 export default class App extends React.Component {
   constructor(props) {
