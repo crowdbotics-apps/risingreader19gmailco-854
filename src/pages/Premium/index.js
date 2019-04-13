@@ -131,7 +131,7 @@ class PremiumScreen extends Component {
               price="$5"
               pricingStyle={styles.price}
               //info={['                   ']}
-              button={{ title: 'GET' }}
+              button={{ icon: 'shopping-cart' }}
               containerStyle={styles.container}
               onButtonPress={this.handleCardPayPress.bind(this, 5)}
             />
@@ -139,10 +139,10 @@ class PremiumScreen extends Component {
               color="#4f9deb"
               title="Yearly"
               titleStyle={styles.title}
-              price="$23.9"
+              price="$24"
               pricingStyle={styles.price}
               //info={[' ']}
-              button={{ title: 'GET' }}
+              button={{ icon: 'shopping-cart' }}
               containerStyle={styles.container}
               onButtonPress={this.handleCardPayPress.bind(this, 23.9)}
             />
@@ -153,7 +153,7 @@ class PremiumScreen extends Component {
               price="$150"
               pricingStyle={styles.price}
               //info={['                 ']}
-              button={{ title: 'GET' }}
+              button={{ icon: 'shopping-cart' }}
               containerStyle={styles.container}
               onButtonPress={this.handleCardPayPress.bind(this, 150)}
             />

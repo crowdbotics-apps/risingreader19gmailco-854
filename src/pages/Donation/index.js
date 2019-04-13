@@ -8,6 +8,11 @@ import { AppContext, Navbar } from 'app/components';
 import { AuthController } from 'app/services';
 import { alert, success } from 'app/utils/Alert';
 import { FirstBook_URL } from '../../constant';
+import { API } from 'app/services';
+import stripe from 'tipsi-stripe';
+
+const auth = firebase.auth();
+const store = firebase.firestore();
 
 import {
   Container,
@@ -39,7 +44,9 @@ class DonationScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      amount: ''
+    };
   }
 
   gotoURL = () => {
@@ -58,6 +65,36 @@ class DonationScreen extends Component {
     this.props.navigation.navigate('more');
   };
 
+  inputChanged = (key) => (text) => {
+    this.setState({ [key]: text });
+  };
+
+  donateHandler = async (amount) => {
+    try {
+      //this.setState({ loading: true, token: null })
+      this.context.showLoading();
+      const token = await stripe.paymentRequestWithCardForm();
+
+      if (token) {
+        const res = ''; //await API.charge(token.tokenId, amount, 'USD');
+        success('Charged. ' + res);
+      } else throw 'Token is empty. Could not connect to Stripe.';
+
+      // //TODO: update transaction
+      // let ref = store.collection('users').doc(auth.currentUser.uid);
+      // await ref.update({
+      //   plan: plan
+      // });
+
+      this.setState({ token, amount: '' });
+
+      this.context.hideLoading();
+    } catch (error) {
+      alert(error);
+      this.context.hideLoading();
+    }
+  };
+
   render() {
     return (
       <Container>
@@ -68,17 +105,39 @@ class DonationScreen extends Component {
         />
 
         <Content padder>
-          <H2 style={{ textAlign: 'center', marginTop: 30 }}>
+          <H2 style={{ textAlign: 'center', marginVertical: 30 }}>
             Give us a hand to get the life better
           </H2>
-          {/* <H3 style={{ textAlign: 'center', marginTop: 30 }}>By signing up First Book via link below</H3> */}
-          <Button
-            primary
-            onPress={this.gotoURL}
-            style={{ marginTop: 30, alignSelf: 'center' }}
-          >
-            <Text>Sign Up On First Book</Text>
-          </Button>
+
+          <Form>
+            <Item rounded style={styles.input}>
+              <Input
+                placeholder="Any dollars will help"
+                autoFocus={true}
+                //autoCapitalize="none"
+                value={this.state.amount}
+                onChangeText={this.inputChanged('amount')}
+                textAlign={'center'}
+              />
+            </Item>
+
+            <Button
+              rounded
+              primary
+              style={styles.button}
+              onPress={this.donateHandler.bind(this, this.state.amount)}
+            >
+              <Text style={styles.buttonText}>Donate</Text>
+            </Button>
+            {/* <H2>Or</H2>
+            <Button
+              primary
+              onPress={this.gotoURL}
+              style={{ marginTop: 30, alignSelf: 'center' }}
+            >
+              <Text>Sign Up On First Book</Text>
+            </Button> */}
+          </Form>
 
           <Text style={{ marginTop: 50 }}>Supporting Charity List:</Text>
           <Text>1. Pajama Program</Text>

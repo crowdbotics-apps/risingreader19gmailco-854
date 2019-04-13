@@ -21,6 +21,7 @@ import LeaderBoardScreen from './LeaderBoard';
 import MoreScreen from './More';
 
 import C_MainScreen from './C_Main';
+import C_BookScreen from './C_Book';
 import C_GoalScreen from './C_Goal';
 import C_AchievementScreen from './C_Achievement';
 import C_LeaderBoardScreen from './C_LeaderBoard';
@@ -60,6 +61,7 @@ const MainStackNavigator = createStackNavigator(
     more: MoreScreen,
 
     c_books: C_MainScreen,
+    c_book: C_BookScreen,
     c_goal: C_GoalScreen,
     c_achievement: C_AchievementScreen,
     c_leaderBoard: C_LeaderBoardScreen,
@@ -74,7 +76,7 @@ const MainStackNavigator = createStackNavigator(
     goals: GoalsScreen
   },
   {
-    initialRouteName: 'books',
+    initialRouteName: 'c_books',
     headerMode: 'none'
   }
 );

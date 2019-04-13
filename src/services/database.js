@@ -187,8 +187,103 @@ const generatePlan = async ({
   }
 };
 
+const updateBook = async (payload) => {
+  try {
+    //console.error(payload.id)
+    let ref = store
+      .collection('books')
+      .doc(payload.id)
+      .get();
+
+    const book = ref.data();
+
+    await ref.update({
+      // id: id,
+      // uid: payload.uid,
+      // masterId: payload.masterId,
+      title: payload.title ? payload.title : book.title,
+      author: payload.author ? payload.author : book.author,
+      pages: payload.pages ? payload.pages : book.pages,
+      read: payload.read ? payload.read : book.read,
+      uri: payload.uri ? payload.uri : book.uri,
+      status: 1
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const createBook = async (payload) => {
+  try {
+    const id = uuid();
+    let ref = store.collection('books').doc(id);
+    await store.runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+
+      if (!doc.exists) {
+        transaction.set(ref, {
+          id: id,
+          uid: payload.uid,
+          masterId: payload.masterId,
+          title: payload.title,
+          author: payload.author,
+          pages: payload.pages,
+          read: payload.read,
+          uri: payload.uri,
+          status: 1
+        });
+      }
+      return;
+    });
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const deleteBook = async (id) => {
+  try {
+    //only master can delete associated user
+
+    let ref = store.collection('books').doc(id);
+
+    await store.runTransaction(async (transaction) => {
+      const doc = await transaction.get(ref);
+
+      if (doc.exists) {
+        transaction.update(ref, {
+          status: 0
+        });
+      }
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getBook = async (uid) => {
+  try {
+    let ref = await store
+      .collection('books')
+      .doc(uid)
+      .get();
+
+    const book = ref.data();
+
+    return book;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default {
   createGoal,
   updateGoal,
+
+  createBook,
+  updateBook,
+  deleteBook,
+  getBook,
+
   generatePlan
 };
