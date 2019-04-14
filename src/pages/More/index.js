@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Platform } from 'react-native';
+import { View, Dimensions, Platform, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 
 let dm = Dimensions.get('screen');
@@ -54,6 +54,7 @@ class MoreScreen extends Component {
   toggleSignOut = async () => {
     try {
       await AuthController.logout();
+      await AsyncStorage.clear();
       this.props.navigation.navigate('auth');
     } catch (error) {
       alert(error.message);

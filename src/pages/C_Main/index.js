@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 
@@ -31,11 +31,11 @@ class C_MainScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.ref = firebase
-      .firestore()
-      .collection('books')
-      //.where('masterId', '==', firebase.auth().currentUser.uid)
-      .where('status', '==', 1);
+    // this.ref = firebase
+    //   .firestore()
+    //   .collection('books')
+    //   .where('uid', '==', uid)
+    //   .where('status', '==', 1);
     this.unsubscribe = null;
 
     this.state = {
@@ -73,7 +73,14 @@ class C_MainScreen extends Component {
     }
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    const uid = await AsyncStorage.getItem('childId');
+    this.ref = firebase
+      .firestore()
+      .collection('books')
+      .where('uid', '==', uid)
+      .where('status', '==', 1);
+
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Platform } from 'react-native';
+import { View, Dimensions, Platform, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 
 let dm = Dimensions.get('screen');
@@ -32,6 +32,28 @@ import firebase from 'react-native-firebase';
 class C_UserScreen extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      name: ''
+    };
+  }
+
+  async componentDidMount() {
+    const uid = await AsyncStorage.getItem('childId');
+
+    this.ref = firebase
+      .firestore()
+      .collection('users')
+      .doc(uid);
+
+    const doc = await this.ref.get();
+    const user = doc.data();
+
+    this.setState({
+      name: user.name
+    });
+
+    //alert(user.name)
   }
 
   toggleUsers = () => {
@@ -41,6 +63,7 @@ class C_UserScreen extends Component {
   toggleSignOut = async () => {
     try {
       await AuthController.logout();
+      await AsyncStorage.clear();
       this.props.navigation.navigate('auth');
     } catch (error) {
       alert(error.message);
@@ -66,7 +89,7 @@ class C_UserScreen extends Component {
             </Left>
             <Body>
               <View>
-                <Text style={{ paddingBottom: 10 }}>Child Name</Text>
+                <Text style={{ paddingBottom: 10 }}>{this.state.name}</Text>
                 <Text numberOfLines={1} note>
                   Child
                 </Text>

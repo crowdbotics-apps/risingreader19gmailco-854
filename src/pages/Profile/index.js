@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'react-native-firebase';
@@ -126,7 +126,9 @@ class ProfileScreen extends Component {
     }
   };
 
-  switchHandler = () => {
+  switchHandler = async () => {
+    const userId = this.props.navigation.getParam('userId', '');
+    await AsyncStorage.setItem('childId', userId);
     this.props.navigation.navigate('c_books');
   };
 

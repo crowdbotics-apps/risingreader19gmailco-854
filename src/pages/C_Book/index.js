@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Alert } from 'react-native';
+import { View, TextInput, Alert, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'react-native-firebase';
@@ -84,12 +84,17 @@ class C_BookScreen extends Component {
       let bookId = this.props.navigation.getParam('bookId', '');
       const { title, author, pages, uri, filename } = this.state;
 
+      const [userToken, childId] = await Promise.all([
+        AsyncStorage.getItem('userToken'),
+        AsyncStorage.getItem('childId')
+      ]);
+
       if (!bookId) {
         bookId = uuid();
         await Database.createBook({
           id: bookId,
-          uid: '', //TODO
-          masterId: '', //TODO
+          uid: childId,
+          masterId: userToken,
           title: title,
           author: author,
           pages: pages,
@@ -100,8 +105,8 @@ class C_BookScreen extends Component {
       } else {
         await Database.updateBook({
           id: bookId,
-          uid: '', //TODO
-          masterId: '', //TODO
+          uid: childId,
+          masterId: userToken,
           title: title,
           author: author,
           pages: pages,
@@ -111,18 +116,21 @@ class C_BookScreen extends Component {
         });
       }
 
-      await firebase
-        .storage()
-        .ref(`/books/${bookId}`)
-        .putFile(
-          `${firebase.storage.Native.DOCUMENT_DIRECTORY_PATH}/${filename}`
-        )
-        .then((uploadedFile) => {
-          console.log(uploadedFile);
-        })
-        .catch((err) => {
-          alert(err.message);
-        });
+      // Todo: upload to firestore if needed
+      // if (filename) {
+      //    firebase
+      //     .storage()
+      //     .ref(`/books/${bookId}`)
+      //     .putFile(
+      //       `${firebase.storage.Native.DOCUMENT_DIRECTORY_PATH}/${filename}`
+      //     )
+      //     .then((uploadedFile) => {
+      //       console.log(uploadedFile);
+      //     })
+      //     .catch((err) => {
+      //       alert(err.message);
+      //     });
+      // }
 
       this.props.navigation.goBack();
       this.context.hideLoading();

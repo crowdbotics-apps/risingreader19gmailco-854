@@ -19,6 +19,8 @@ class LoadingScreen extends Component {
     this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
       try {
         this.context.hideLoading();
+        //const userToken = await AsyncStorage.getItem('userToken');
+
         if (user) {
           this.props.navigation.navigate('main');
         } else {

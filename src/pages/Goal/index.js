@@ -652,6 +652,7 @@ class GoalScreen extends Component {
                 step={1}
                 thumbTintColor={'#007AFF'}
                 style={{ width: dm.width * 0.95, marginTop: 30 }}
+                disabled
               />
               <H3 style={{ alignSelf: 'center', color: '#007AFF' }}>
                 {this.state.value}/{this.state.number}{' '}
@@ -747,6 +748,7 @@ class GoalScreen extends Component {
                 step={1}
                 thumbTintColor={'#007AFF'}
                 style={{ width: dm.width * 0.95, marginTop: 30 }}
+                disabled
               />
               <H3 style={{ alignSelf: 'center', color: '#007AFF' }}>
                 {this.state.value_Y}/{this.state.number_Y}{' '}

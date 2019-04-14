@@ -84,6 +84,7 @@ class LoginScreen extends React.Component {
         await AuthController.sendEmailVerification();
         alert('Verification email is sent. Please verify email first.');
       } else {
+        await AsyncStorage.setItem('userToken', user.user.uid);
         this.props.navigation.navigate('main');
       }
       this.context.hideLoading();
@@ -151,6 +152,7 @@ class LoginScreen extends React.Component {
       }
 
       if (!user.email != null) {
+        await AsyncStorage.setItem('userToken', user.uid);
         this.props.navigation.navigate('main');
       }
 
@@ -221,7 +223,7 @@ class LoginScreen extends React.Component {
               transparent
               dark
               onPress={this.goToForgotpswd}
-              style={{alignSelf:'center', marginBottom: 40}}
+              style={{ alignSelf: 'center', marginBottom: 40 }}
             >
               <Text>Forgot password?</Text>
             </Button>
@@ -229,7 +231,7 @@ class LoginScreen extends React.Component {
             <Button
               rounded
               primary
-              style={{alignSelf:'center', width: '100%'}}
+              style={{ alignSelf: 'center', width: '100%' }}
               onPress={this.facebookLogin}
             >
               <Text style={styles.buttonText}>Login with Facebook</Text>

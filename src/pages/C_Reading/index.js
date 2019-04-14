@@ -129,6 +129,10 @@ class C_ReadingScreen extends Component {
     this.setState({ visibleTimer: true });
   };
 
+  editHandler = (id) => {
+    this.props.navigation.navigate('c_book', { bookId: id });
+  };
+
   inputChanged = (key) => (text) => {
     this.setState({ [key]: text });
   };
@@ -259,6 +263,9 @@ class C_ReadingScreen extends Component {
         read: this.state.page,
         duration: this.state.interval
       });
+
+      //Todo: update goals
+
       this.context.hideLoading();
     } catch (error) {
       this.context.hideLoading();
@@ -316,9 +323,19 @@ class C_ReadingScreen extends Component {
               <Text style={{ marginBottom: 5 }}>Title: {title}</Text>
               <Text style={{ marginBottom: 5 }}>Author: {author}</Text>
               <Text style={{ marginBottom: 20 }}>{`Pages: ${pages}`}</Text>
-              <Button rounded onPress={this.readHandler.bind(this, bookId)}>
-                <Text>Read Book</Text>
-              </Button>
+              <Row>
+                <Button rounded onPress={this.readHandler.bind(this, bookId)}>
+                  <Text>Read</Text>
+                </Button>
+
+                <Button
+                  rounded
+                  style={{ marginLeft: 20 }}
+                  onPress={this.editHandler.bind(this, bookId)}
+                >
+                  <Text>Edit</Text>
+                </Button>
+              </Row>
             </Body>
             <Right>
               <React.Fragment />
@@ -349,7 +366,9 @@ class C_ReadingScreen extends Component {
               <Col>
                 <Text>Read Speed</Text>
                 <Text>
-                  {duration > 0 && `${Math.round(read / (duration / 3600))}`}{' '}
+                  {duration > 0
+                    ? `${Math.round(read / (duration / 3600))}`
+                    : '0'}{' '}
                 </Text>
               </Col>
               <Col>
