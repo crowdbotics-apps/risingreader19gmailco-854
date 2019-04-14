@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TextInput, ScrollView } from 'react-native';
+import { View, Image, TextInput, ScrollView, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 

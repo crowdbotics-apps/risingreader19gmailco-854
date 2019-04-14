@@ -19,19 +19,17 @@ import {
   Text
 } from 'native-base';
 
-
 class C_AchievementScreen extends Component {
   constructor(props) {
     super(props);
   }
 
- 
   render() {
     return (
       <Container>
-        <Navbar title="Leader Board" />
+        <Navbar title="Achievement" />
         <Content />
-        <C_TabBar tab1={true} navigation={this.props.navigation}/>
+        <C_TabBar tab1={true} navigation={this.props.navigation} />
       </Container>
     );
   }

@@ -51,7 +51,8 @@ class C_ReadingScreen extends Component {
 
       interval: 0,
       timerStarted: false,
-      page: ''
+      page: '',
+      error: ''
     };
 
     const bookId = this.props.navigation.getParam('bookId', '');
@@ -197,7 +198,7 @@ class C_ReadingScreen extends Component {
               onPress={this.timerStart}
             >
               <Text style={styles.buttonSaveText}>
-                {this.state.timerStarted ? 'PAUSED' : 'START'}
+                {this.state.timerStarted ? 'PAUSE' : 'START'}
               </Text>
             </Button>
           </Col>
@@ -226,8 +227,16 @@ class C_ReadingScreen extends Component {
         />
 
         <Label style={{ marginVertical: 20 }}>
-          Before ending this session, please enter the page you got to:
+          Before ending this session, please enter the page number you got to:
         </Label>
+
+        {this.state.error ? (
+          <Label style={{ color: 'red', marginBottom: 5 }}>
+            {this.state.error}
+          </Label>
+        ) : (
+          <React.Fragment />
+        )}
 
         <Item rounded style={{ marginBottom: 20, alignItems: 'center' }}>
           <Input
@@ -258,12 +267,27 @@ class C_ReadingScreen extends Component {
       this.context.showLoading();
       const bookId = this.props.navigation.getParam('bookId', '');
 
+      if (this.state.page < 1 || this.state.page > this.state.pages) {
+        this.context.hideLoading();
+        this.setState({
+          error:
+            'The page number is not less than 1 or greater than total pages' +
+            this.state.pages,
+          visibleEndSession: true
+        });
+        return;
+      }
+
       Database.updateBook({
         id: bookId,
         read: this.state.page,
         duration: this.state.interval
       });
 
+      this.setState({
+        error: '',
+        visibleEndSession: false
+      });
       //Todo: update goals
 
       this.context.hideLoading();
@@ -290,7 +314,7 @@ class C_ReadingScreen extends Component {
             windowBackgroundColor="rgba(0, 0, 0, .7)"
             overlayBackgroundColor="white"
             width="80%"
-            height="50%"
+            height="40%"
           >
             {this.renderTimer()}
           </Overlay>
@@ -354,7 +378,7 @@ class C_ReadingScreen extends Component {
           <Grid style={{ margin: 10 }}>
             <Row style={{ marginBottom: 20 }}>
               <Col>
-                <Text>Pages Read</Text>
+                <Text>Current Page</Text>
                 <Text>{read}</Text>
               </Col>
               <Col>

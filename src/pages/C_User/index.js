@@ -106,7 +106,7 @@ class C_UserScreen extends Component {
           </ListItem>
 
           <Separator bordered />
-          <ListItem icon>
+          <ListItem icon onPress={this.toggleSignOut}>
             <Left>
               <Button style={{ backgroundColor: '#007AFF' }}>
                 <Icon active type="FontAwesome5" name="sign-out-alt" />

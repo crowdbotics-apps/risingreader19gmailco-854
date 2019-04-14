@@ -110,7 +110,7 @@ class C_BookScreen extends Component {
           title: title,
           author: author,
           pages: pages,
-          read: '0',
+          //read: '0',
           uri: uri,
           filename: filename
         });
@@ -156,7 +156,7 @@ class C_BookScreen extends Component {
             try {
               this.context.showLoading();
               await Database.deleteBook(id);
-              this.props.navigation.goBack();
+              this.props.navigation.navigate('c_books');
               this.context.hideLoading();
             } catch (error) {
               this.context.hideLoading();

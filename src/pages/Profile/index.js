@@ -168,7 +168,7 @@ class ProfileScreen extends Component {
   render() {
     const userId = this.props.navigation.getParam('userId', 'NEW');
     const masterId = this.props.navigation.getParam('masterId', '');
-
+    //alert((userId != 'NEW' && !masterId).toString())
     return (
       <Container>
         <Navbar left="arrow-back" leftHandler={this.leftHandler} title="User" />
@@ -185,7 +185,7 @@ class ProfileScreen extends Component {
               />
             </Item>
 
-            {userId != 'NEW' && masterId == '' ? (
+            {userId != 'NEW' && !masterId ? (
               <View>
                 <Item
                   rounded
