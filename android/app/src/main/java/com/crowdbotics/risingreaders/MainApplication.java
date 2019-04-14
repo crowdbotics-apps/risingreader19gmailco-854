@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.gettipsi.stripe.StripeReactPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
@@ -60,6 +61,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.asList(
         new MainReactPackage(),
+            new ImagePickerPackage(),
             new StripeReactPackage(),
         new FBSDKPackage(mCallbackManager),
             //new RNFirebasePackage(),

@@ -49,7 +49,7 @@ class C_MainScreen extends Component {
       const books = [];
       // let users = [];
       querySnapshot.forEach((doc) => {
-        const { title, author, pages, uri, read } = doc.data();
+        const { title, author, pages, uri, read, filename } = doc.data();
 
         books.push({
           key: doc.id,
@@ -58,7 +58,8 @@ class C_MainScreen extends Component {
           author,
           pages,
           uri,
-          read
+          read,
+          filename
         });
       });
 
@@ -85,7 +86,7 @@ class C_MainScreen extends Component {
   };
 
   itemPressHandler = (id) => {
-    this.props.navigation.navigate('c_book', { bookId: id });
+    this.props.navigation.navigate('c_read', { bookId: id });
   };
 
   render() {
@@ -101,7 +102,10 @@ class C_MainScreen extends Component {
         <Content>
           <List>
             {this.state.books.map((data, i) => {
-              const { key, title, author, uri, read, pages } = data;
+              const { key, title, author, read, pages, filename } = data;
+              const uri = `${
+                firebase.storage.Native.DOCUMENT_DIRECTORY_PATH
+              }/${filename}`;
               return (
                 <ListItem
                   thumbnail
@@ -112,16 +116,16 @@ class C_MainScreen extends Component {
                     <Thumbnail
                       square
                       source={
-                        this.state.image
-                          ? { uri: this.state.image }
+                        filename
+                          ? { uri: uri }
                           : require('../../assets/images/book.png')
                       }
                     />
                   </Left>
                   <Body>
-                    <Text>Title: {title}</Text>
-                    <Text>Author: {author}</Text>
-                    <Text>{`${read} / ${pages}`}</Text>
+                    <Text style={{ marginBottom: 5 }}>Title: {title}</Text>
+                    <Text style={{ marginBottom: 5 }}>Author: {author}</Text>
+                    <Text>{`${read} / ${pages} pages`}</Text>
                   </Body>
                   <Right>
                     <React.Fragment />

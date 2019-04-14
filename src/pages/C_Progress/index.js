@@ -35,7 +35,7 @@ import {
 
 import styles from './style';
 
-class C_BookScreen extends Component {
+class C_ProgressScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -274,10 +274,11 @@ class C_BookScreen extends Component {
             >
               <Thumbnail
                 style={{ width: 200, height: 200 }}
+                square
                 source={
                   this.state.uri
                     ? { uri: this.state.uri }
-                    : require('../../assets/images/book.png')
+                    : require('../../assets/images/add-book.png')
                 }
               />
             </Button>
@@ -335,10 +336,10 @@ class C_BookScreen extends Component {
   }
 }
 
-C_BookScreen.contextType = AppContext;
+C_ProgressScreen.contextType = AppContext;
 
-C_BookScreen.propTypes = {
+C_ProgressScreen.propTypes = {
   navigation: PropTypes.object
 };
 
-export default C_BookScreen;
+export default C_ProgressScreen;

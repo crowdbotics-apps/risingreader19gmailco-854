@@ -33,6 +33,8 @@ import GoalsScreen from './Goals';
 import DonationScreen from './Donation';
 import PremiumScreen from './Premium';
 import ParentingScreen from './Parenting';
+import C_ReadingScreen from './C_Reading';
+import C_ProgressScreen from './C_Progress';
 
 const AuthNavigator = createStackNavigator(
   {
@@ -62,6 +64,8 @@ const MainStackNavigator = createStackNavigator(
 
     c_books: C_MainScreen,
     c_book: C_BookScreen,
+    c_read: C_ReadingScreen,
+    c_progress: C_ProgressScreen,
     c_goal: C_GoalScreen,
     c_achievement: C_AchievementScreen,
     c_leaderBoard: C_LeaderBoardScreen,

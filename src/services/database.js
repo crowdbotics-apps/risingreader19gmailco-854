@@ -80,6 +80,8 @@ const deleteUser = async (uid) => {
         });
       }
     });
+
+    //TODO: delete image
   } catch (error) {
     throw error;
   }
@@ -190,12 +192,9 @@ const generatePlan = async ({
 const updateBook = async (payload) => {
   try {
     //console.error(payload.id)
-    let ref = store
-      .collection('books')
-      .doc(payload.id)
-      .get();
-
-    const book = ref.data();
+    let ref = store.collection('books').doc(payload.id);
+    const bookDoc = await ref.get();
+    const book = bookDoc.data();
 
     await ref.update({
       // id: id,
@@ -206,6 +205,10 @@ const updateBook = async (payload) => {
       pages: payload.pages ? payload.pages : book.pages,
       read: payload.read ? payload.read : book.read,
       uri: payload.uri ? payload.uri : book.uri,
+      filename: payload.filename ? payload.filename : book.filename,
+      duration: payload.duration
+        ? payload.duration + book.duration
+        : book.duration,
       status: 1
     });
   } catch (error) {
@@ -215,7 +218,7 @@ const updateBook = async (payload) => {
 
 const createBook = async (payload) => {
   try {
-    const id = uuid();
+    const id = payload.id;
     let ref = store.collection('books').doc(id);
     await store.runTransaction(async (transaction) => {
       const doc = await transaction.get(ref);
@@ -229,7 +232,9 @@ const createBook = async (payload) => {
           author: payload.author,
           pages: payload.pages,
           read: payload.read,
+          duration: 0,
           uri: payload.uri,
+          filename: payload.filename,
           status: 1
         });
       }

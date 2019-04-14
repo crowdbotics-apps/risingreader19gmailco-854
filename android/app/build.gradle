@@ -154,6 +154,7 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-image-picker')
     implementation project(':tipsi-stripe')
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:design:27.1.0'
