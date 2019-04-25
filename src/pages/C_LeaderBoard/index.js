@@ -19,19 +19,17 @@ import {
   Text
 } from 'native-base';
 
-
 class C_LeaderBoardScreen extends Component {
   constructor(props) {
     super(props);
   }
 
- 
   render() {
     return (
       <Container>
         <Navbar title="Leader Board" />
         <Content />
-        <C_TabBar tab1={true} navigation={this.props.navigation}/>
+        <C_TabBar tab3={true} navigation={this.props.navigation} />
       </Container>
     );
   }

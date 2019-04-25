@@ -26,11 +26,11 @@ class C_TabBar extends Component {
   };
 
   toggleTab3 = () => {
-    this.props.navigation.navigate('c_achievement');
+    this.props.navigation.navigate('c_leaderBoard');
   };
 
   toggleTab4 = () => {
-    this.props.navigation.navigate('c_leaderBoard');
+    this.props.navigation.navigate('c_achievement');
   };
 
   toggleTab5 = () => {
@@ -49,9 +49,9 @@ class C_TabBar extends Component {
           <Button vertical active={tab2} onPress={this.toggleTab2}>
             <Icon type="FontAwesome" name="bullseye" />
           </Button>
-          <Button vertical active={tab3} onPress={this.toggleTab3}>
+          {/* <Button vertical active={tab3} onPress={this.toggleTab3}>
             <Icon active name="md-trophy" />
-          </Button>
+          </Button> */}
           <Button vertical active={tab4} onPress={this.toggleTab4}>
             <Icon type="FontAwesome5" name="award" />
           </Button>

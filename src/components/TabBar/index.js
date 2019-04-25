@@ -43,18 +43,18 @@ class TabBar extends Component {
     return (
       <Footer>
         <FooterTab>
-          <Button vertical active={tab1} onPress={this.toggleTab1}>
+          {/* <Button vertical active={tab1} onPress={this.toggleTab1}>
             <Icon name="book" />
-          </Button>
+          </Button> */}
           <Button vertical active={tab2} onPress={this.toggleTab2}>
             <Icon type="FontAwesome" name="bullseye" />
           </Button>
           <Button vertical active={tab3} onPress={this.toggleTab3}>
             <Icon active name="md-stats" />
           </Button>
-          <Button vertical active={tab4} onPress={this.toggleTab4}>
+          {/* <Button vertical active={tab4} onPress={this.toggleTab4}>
             <Icon name="md-trophy" />
-          </Button>
+          </Button> */}
           <Button vertical active={tab5} onPress={this.toggleTab5}>
             <Icon name="ios-more" />
           </Button>

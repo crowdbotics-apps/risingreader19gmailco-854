@@ -685,7 +685,7 @@ class GoalScreen extends Component {
           <Icon type="FontAwesome5" name="award" />
           <Text style={styles.buttonText}>Completed Goals</Text>
         </Button>
-        <Button
+        {/* <Button
           rounded
           primary
           style={styles.button}
@@ -693,7 +693,7 @@ class GoalScreen extends Component {
         >
           <Icon type="FontAwesome5" name="user-clock" />
           <Text style={styles.buttonText}>Reminders</Text>
-        </Button>
+        </Button> */}
       </Content>
     );
   };
@@ -781,7 +781,7 @@ class GoalScreen extends Component {
           <Icon type="FontAwesome5" name="award" />
           <Text style={styles.buttonText}>Completed Goals</Text>
         </Button>
-        <Button
+        {/* <Button
           rounded
           primary
           style={styles.button}
@@ -789,7 +789,7 @@ class GoalScreen extends Component {
         >
           <Icon type="FontAwesome5" name="user-clock" />
           <Text style={styles.buttonText}>Reminders</Text>
-        </Button>
+        </Button> */}
       </Content>
     );
   };
