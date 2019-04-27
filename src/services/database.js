@@ -281,6 +281,26 @@ const getBook = async (uid) => {
   }
 };
 
+const getStats = async () => {
+  try {
+    let ref = firebase
+      .firestore()
+      .collection('stats')
+      .where('uid', '==', auth.currentUser.uid);
+
+    const QuerySnapshot = await ref.get();
+    //console.error(QuerySnapshot.docs[0].data())
+    if (QuerySnapshot.docs.length > 0) {
+      const item = QuerySnapshot.docs[0].data();
+
+      return item;
+    }
+    return null;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export default {
   createGoal,
   updateGoal,
@@ -290,5 +310,6 @@ export default {
   deleteBook,
   getBook,
 
-  generatePlan
+  generatePlan,
+  getStats
 };
