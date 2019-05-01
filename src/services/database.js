@@ -408,15 +408,13 @@ const updateOthers = async ({ childId, page, interval, book }) => {
       const user = ssUser.data();
 
       userPageRead = user.pageRead ? user.pageRead + page : page;
-      userBookNo = user.bookNo ? user.bookNo + book
-        : book;
-      userTotalTime = user.totalTime ? user.totalTime + interval
-        : interval;
+      userBookNo = user.bookNo ? user.bookNo + book : book;
+      userTotalTime = user.totalTime ? user.totalTime + interval : interval;
 
       refUser.update({
         pageRead: userPageRead,
         totalTime: userTotalTime,
-        bookNo: userBookNo,
+        bookNo: userBookNo
       });
     }
 
@@ -486,21 +484,19 @@ const updateOthers = async ({ childId, page, interval, book }) => {
             tasks: [...tasks.filter((item) => item.id !== updTask.id), updTask]
           });
         } else {
-
           const lst = tasks.filter((item) => item[childId] != null);
-          
 
           if (lst) {
-            const min = 0
-          for(i=0;i<lst.length-1;i++)
-          for(j=0;j<lst.length;j++)
-            if(lst[min].id > lst[j].id)
-              min = j
+            const min = 0;
+            for (i = 0; i < lst.length - 1; i++)
+              for (j = 0; j < lst.length; j++)
+                if (lst[min].id > lst[j].id) min = j;
 
             const task = lst[min];
             let value = segGoal === 2 ? page : interval;
             if (segGoal === 2 && value > task.number) value = task.number;
-            if (segGoal === 1 && value > task.number * 3600) value = task.number;
+            if (segGoal === 1 && value > task.number * 3600)
+              value = task.number;
             //Todo: move left over to next task
             const updTask = {
               ...task,
