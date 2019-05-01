@@ -400,10 +400,11 @@ const updateOthers = async ({ childId, page, interval, book }) => {
       .collection('users')
       .doc(childId);
 
-    const ssUser = refUser.get();
+    const ssUser = await refUser.get();
     let userPageRead = 0;
     let userTotalTime = 0;
     let userBookNo = 0;
+
     if (ssUser.exists) {
       const user = ssUser.data();
 
@@ -486,7 +487,7 @@ const updateOthers = async ({ childId, page, interval, book }) => {
         } else {
           const lst = tasks.filter((item) => item[childId] != null);
 
-          if (lst) {
+          if (lst && lst[0]) {
             const min = 0;
             for (i = 0; i < lst.length - 1; i++)
               for (j = 0; j < lst.length; j++)

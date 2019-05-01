@@ -130,7 +130,9 @@ class StatsScreen extends Component {
                 <Text>Total time so far</Text>
               </Body>
               <Right style={styles.right}>
-                <Text style={styles.value}>{totalTime} </Text>
+                <Text style={styles.value}>
+                  {Math.floor(totalTime / 3600)}{' '}
+                </Text>
                 <Text note>hours</Text>
               </Right>
             </ListItem>
@@ -190,7 +192,7 @@ class StatsScreen extends Component {
                 <Text>Best read day in time</Text>
               </Body>
               <Right style={styles.right}>
-                <Text style={styles.value}>{bestTime} </Text>
+                <Text style={styles.value}>{Math.floor(bestTime / 60)} </Text>
                 <Text note>mins</Text>
               </Right>
             </ListItem>

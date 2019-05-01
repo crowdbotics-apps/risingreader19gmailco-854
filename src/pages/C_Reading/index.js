@@ -305,16 +305,17 @@ class C_ReadingScreen extends Component {
       const bookId = this.props.navigation.getParam('bookId', '');
 
       if (
-        !this.state.page ||
+        this.state.page == '' ||
         parseInt(this.state.page) < 1 ||
-        parseInt(this.state.page) + this.state.read > this.state.pages
+        parseInt(this.state.page) + parseInt(this.state.read) > this.state.pages
       ) {
         this.context.hideLoading();
         this.setState({
           error:
             'The number of pages is not less than 1 or greater than total pages ' +
             this.state.pages +
-            ' ',
+            ' ' +
+            (parseInt(this.state.page) + this.state.read > this.state.pages),
           visibleEndSession: true
         });
         return;
