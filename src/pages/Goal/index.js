@@ -36,10 +36,12 @@ import {
   Col,
   Row,
   Picker,
-  Form
+  Form,
+  Thumbnail
 } from 'native-base';
 import { Slider, Overlay } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { timeConvert } from '../../utils/Alert';
 
 class GoalScreen extends Component {
   constructor(props) {
@@ -348,10 +350,10 @@ class GoalScreen extends Component {
   renderSetGoal = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
-        <Icon
-          type="FontAwesome"
-          name="trophy"
-          style={{ fontSize: 60, color: '#007AFF' }}
+        <Thumbnail
+          square
+          style={{ marginBottom: 5 }}
+          source={require('../../assets/images/001-best.png')}
         />
 
         <Segment style={{ marginBottom: 20 }}>
@@ -377,14 +379,20 @@ class GoalScreen extends Component {
             keyboardType="numeric"
             value={this.state.number.toString()}
             onChangeText={this.inputChanged('number')}
+            textAlign={'center'}
           />
         </Item>
         <Item
           rounded
-          style={{ width: '99%', paddingVertical: 5, marginBottom: 20 }}
+          style={{
+            width: '99%',
+            paddingVertical: 5,
+            marginBottom: 20,
+            justifyContent: 'center'
+          }}
         >
           <DatePicker
-            defaultDate={new Date(2019, 1, 1)}
+            defaultDate={new Date()}
             minimumDate={new Date(2018, 1, 1)}
             maximumDate={new Date(2028, 12, 31)}
             locale={'en'}
@@ -405,10 +413,15 @@ class GoalScreen extends Component {
         </Item>
         <Item
           rounded
-          style={{ width: '99%', paddingVertical: 5, marginBottom: 20 }}
+          style={{
+            width: '99%',
+            paddingVertical: 5,
+            marginBottom: 20,
+            justifyContent: 'center'
+          }}
         >
           <DatePicker
-            defaultDate={new Date(2019, 1, 1)}
+            defaultDate={new Date()}
             minimumDate={new Date(2018, 1, 1)}
             maximumDate={new Date(2028, 12, 31)}
             locale={'en'}
@@ -436,10 +449,10 @@ class GoalScreen extends Component {
   renderSetGoal_Y = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
-        <Icon
-          type="FontAwesome"
-          name="trophy"
-          style={{ fontSize: 60, color: '#007AFF' }}
+        <Thumbnail
+          square
+          style={{ marginBottom: 5 }}
+          source={require('../../assets/images/001-best.png')}
         />
 
         <Segment style={{ marginBottom: 20 }}>
@@ -465,14 +478,20 @@ class GoalScreen extends Component {
             keyboardType="numeric"
             value={this.state.number_Y.toString()}
             onChangeText={this.inputChanged('number_Y')}
+            textAlign={'center'}
           />
         </Item>
         <Item
           rounded
-          style={{ width: '99%', paddingVertical: 5, marginBottom: 20 }}
+          style={{
+            width: '99%',
+            paddingVertical: 5,
+            marginBottom: 20,
+            justifyContent: 'center'
+          }}
         >
           <DatePicker
-            defaultDate={new Date(2019, 1, 1)}
+            defaultDate={new Date()}
             minimumDate={new Date(2018, 1, 1)}
             maximumDate={new Date(2028, 12, 31)}
             locale={'en'}
@@ -492,10 +511,15 @@ class GoalScreen extends Component {
         </Item>
         <Item
           rounded
-          style={{ width: '99%', paddingVertical: 5, marginBottom: 20 }}
+          style={{
+            width: '99%',
+            paddingVertical: 5,
+            marginBottom: 20,
+            justifyContent: 'center'
+          }}
         >
           <DatePicker
-            defaultDate={new Date(2019, 1, 1)}
+            defaultDate={new Date()}
             minimumDate={new Date(2018, 1, 1)}
             maximumDate={new Date(2028, 12, 31)}
             locale={'en'}
@@ -524,13 +548,13 @@ class GoalScreen extends Component {
   renderPlanGenerator = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
-        <Icon
-          type="FontAwesome5"
-          name="book-reader"
-          style={{ fontSize: 60, color: '#007AFF' }}
+        <Thumbnail
+          square
+          style={{ marginBottom: 5 }}
+          source={require('../../assets/images/004-medal-1.png')}
         />
 
-        <Label style={{ marginVertical: 20 }}>generate a reading plan</Label>
+        <Label style={{ marginVertical: 20 }}>Generate a reading plan</Label>
 
         <Item
           picker
@@ -612,27 +636,42 @@ class GoalScreen extends Component {
   renderMonthly = () => {
     return (
       <Content padder contentContainerStyle={{ alignItems: 'center' }}>
-        <Grid>
-          <Col>
-            <H1 style={{ alignSelf: 'center' }}>
+        <Grid style={{ width: '100%' }}>
+          <Row style={{ justifyContent: 'center' }}>
+            <Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>
               {this.state.hasGoal ? 'IN PROGRESS' : 'NOT SET YET'}
-            </H1>
-          </Col>
-          <Col style={{ width: 35 }}>
-            <TouchableOpacity onPress={this.toggleGoal}>
-              <Icon type="FontAwesome5" name="edit" />
-            </TouchableOpacity>
-          </Col>
+            </Text>
+          </Row>
+          {this.state.hasGoal ? (
+            <Row
+              style={{
+                width: '100%',
+                justifyContent: 'flex-end',
+                marginTop: -25
+              }}
+            >
+              <TouchableOpacity onPress={this.toggleGoal}>
+                <Icon
+                  type="FontAwesome5"
+                  name="edit"
+                  style={{ color: '#007AFF' }}
+                />
+              </TouchableOpacity>
+            </Row>
+          ) : (
+            <React.Fragment />
+          )}
         </Grid>
 
         {this.state.hasGoal ? (
           <View
             style={{ alignItems: 'center', width: dm.width, marginTop: 30 }}
           >
-            <Icon
-              type="FontAwesome"
-              name="trophy"
-              style={{ fontSize: 60, color: '#007AFF', marginBottom: 30 }}
+            <Thumbnail
+              large
+              square
+              style={{ marginBottom: 30 }}
+              source={require('../../assets/images/001-best.png')}
             />
 
             <Text>Started On {moment(this.state.start).format('LL')}</Text>
@@ -645,7 +684,11 @@ class GoalScreen extends Component {
               }}
             >
               <Slider
-                value={this.state.value}
+                value={
+                  this.state.segGoal === 2
+                    ? this.state.value
+                    : timeConvert(this.state.value)
+                }
                 onValueChange={(value) => this.setState({ value })}
                 minimumValue={0}
                 maximumValue={1000}
@@ -654,10 +697,18 @@ class GoalScreen extends Component {
                 style={{ width: dm.width * 0.95, marginTop: 30 }}
                 disabled
               />
-              <H3 style={{ alignSelf: 'center', color: '#007AFF' }}>
+              <H3
+                style={{
+                  alignSelf: 'center',
+                  color: '#007AFF',
+                  fontWeight: 'bold'
+                }}
+              >
                 {this.state.value}/{this.state.number}{' '}
-                {this.state.segGoal === 1 ? 'hours' : 'pages'}
               </H3>
+              <Text note style={{ alignSelf: 'center' }}>
+                {this.state.segGoal === 1 ? 'hours' : 'pages'}
+              </Text>
 
               <Label style={{ alignSelf: 'center', marginTop: 30 }}>
                 Read some more to complete it!
@@ -672,19 +723,19 @@ class GoalScreen extends Component {
             onPress={this.toggleGoal}
           >
             <Icon type="FontAwesome5" name="trophy" />
-            <Text style={styles.buttonText}>Set a goal</Text>
+            <Text style={styles.buttonText}>Set A Goal</Text>
           </Button>
         )}
 
-        <Button
+        {/* <Button
           rounded
           primary
-          style={[styles.button, { marginTop: 30 }]}
+          style={[styles.button, { position:'absolute', bottom: 10, }]}
           onPress={this.toggleGoals}
         >
-          <Icon type="FontAwesome5" name="award" />
+          <Icon type="FontAwesome5" name="trophy" />
           <Text style={styles.buttonText}>Completed Goals</Text>
-        </Button>
+        </Button> */}
         {/* <Button
           rounded
           primary
@@ -701,34 +752,42 @@ class GoalScreen extends Component {
   renderYearly = () => {
     return (
       <Content padder contentContainerStyle={{ alignItems: 'center' }}>
-        {/* <H1 style={{ alignSelf: 'center' }}>
-          {this.state.hasGoal_Y ? 'IN PROGRESS' : 'NOT SET YET'}
-        </H1>
-        <TouchableOpacity onPress={this.toggleGoal_Y}>
-          <Icon type="FontAwesome5" name="edit" />
-        </TouchableOpacity> */}
-
-        <Grid>
-          <Col>
-            <H1 style={{ alignSelf: 'center' }}>
+        <Grid style={{ width: '100%' }}>
+          <Row style={{ justifyContent: 'center' }}>
+            <Text style={{ alignSelf: 'center', fontWeight: 'bold' }}>
               {this.state.hasGoal_Y ? 'IN PROGRESS' : 'NOT SET YET'}
-            </H1>
-          </Col>
-          <Col style={{ width: 35 }}>
-            <TouchableOpacity onPress={this.toggleGoal_Y}>
-              <Icon type="FontAwesome5" name="edit" />
-            </TouchableOpacity>
-          </Col>
+            </Text>
+          </Row>
+          {this.state.hasGoal_Y ? (
+            <Row
+              style={{
+                width: '100%',
+                justifyContent: 'flex-end',
+                marginTop: -25
+              }}
+            >
+              <TouchableOpacity onPress={this.toggleGoal_Y}>
+                <Icon
+                  type="FontAwesome5"
+                  name="edit"
+                  style={{ color: '#007AFF' }}
+                />
+              </TouchableOpacity>
+            </Row>
+          ) : (
+            <React.Fragment />
+          )}
         </Grid>
 
         {this.state.hasGoal_Y ? (
           <View
             style={{ alignItems: 'center', width: dm.width, marginTop: 30 }}
           >
-            <Icon
-              type="FontAwesome"
-              name="trophy"
-              style={{ fontSize: 60, color: '#007AFF', marginBottom: 30 }}
+            <Thumbnail
+              large
+              square
+              style={{ marginBottom: 30 }}
+              source={require('../../assets/images/001-best.png')}
             />
 
             <Text>Started On {moment(this.state.start_Y).format('LL')}</Text>
@@ -741,7 +800,11 @@ class GoalScreen extends Component {
               }}
             >
               <Slider
-                value={this.state.value_Y}
+                value={
+                  this.state.segGoal === 2
+                    ? this.state.value_Y
+                    : timeConvert(this.state.value_Y)
+                }
                 onValueChange={(value) => this.setState({ value_Y: value })}
                 minimumValue={0}
                 maximumValue={1000}
@@ -750,10 +813,18 @@ class GoalScreen extends Component {
                 style={{ width: dm.width * 0.95, marginTop: 30 }}
                 disabled
               />
-              <H3 style={{ alignSelf: 'center', color: '#007AFF' }}>
+              <H3
+                style={{
+                  alignSelf: 'center',
+                  color: '#007AFF',
+                  fontWeight: 'bold'
+                }}
+              >
                 {this.state.value_Y}/{this.state.number_Y}{' '}
-                {this.state.segGoal_Y === 1 ? 'hours' : 'pages'}
               </H3>
+              <Text note style={{ alignSelf: 'center' }}>
+                {this.state.segGoal_Y === 1 ? 'hours' : 'pages'}
+              </Text>
 
               <Label style={{ alignSelf: 'center', marginTop: 30 }}>
                 Read some more to complete it!
@@ -768,19 +839,10 @@ class GoalScreen extends Component {
             onPress={this.toggleGoal_Y}
           >
             <Icon type="FontAwesome5" name="trophy" />
-            <Text style={styles.buttonText}>Set a goal</Text>
+            <Text style={styles.buttonText}>Set A Goal</Text>
           </Button>
         )}
 
-        <Button
-          rounded
-          primary
-          style={[styles.button, { marginTop: 30 }]}
-          onPress={this.toggleGoals}
-        >
-          <Icon type="FontAwesome5" name="award" />
-          <Text style={styles.buttonText}>Completed Goals</Text>
-        </Button>
         {/* <Button
           rounded
           primary
@@ -804,13 +866,13 @@ class GoalScreen extends Component {
             active={this.state.seg === 1 ? true : false}
             onPress={() => this.setState({ seg: 1 })}
           >
-            <Text>Monthly</Text>
+            <Text>Monthly Goal</Text>
           </Button>
           <Button
             active={this.state.seg === 2 ? true : false}
             onPress={() => this.setState({ seg: 2 })}
           >
-            <Text>Yearly</Text>
+            <Text>Yearly Goal</Text>
           </Button>
         </Segment>
 
@@ -857,7 +919,15 @@ class GoalScreen extends Component {
 
         {this.state.seg === 1 && this.renderMonthly()}
         {this.state.seg === 2 && this.renderYearly()}
-
+        <Button
+          rounded
+          primary
+          style={[styles.button, { marginTop: 30 }]}
+          onPress={this.toggleGoals}
+        >
+          <Icon type="FontAwesome5" name="award" />
+          <Text style={styles.buttonText}>Completed Goals</Text>
+        </Button>
         <TabBar tab2={true} navigation={this.props.navigation} />
       </Container>
     );

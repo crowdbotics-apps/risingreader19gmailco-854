@@ -24,7 +24,8 @@ import {
   Switch,
   Radio,
   Picker,
-  Separator
+  Separator,
+  Thumbnail
 } from 'native-base';
 import { AuthController } from 'app/services';
 import firebase from 'react-native-firebase';
@@ -50,7 +51,8 @@ class C_UserScreen extends Component {
     const user = doc.data();
 
     this.setState({
-      name: user.name
+      name: user.name,
+      masterId: user.masterId
     });
 
     //alert(user.name)
@@ -80,18 +82,17 @@ class C_UserScreen extends Component {
           <Separator bordered noTopBorder />
           <ListItem avatar>
             <Left>
-              <Icon
-                active
-                type="FontAwesome"
-                name="user"
-                style={{ color: '#007AFF' }}
+              <Thumbnail
+                square
+                style={{ marginBottom: 10 }}
+                source={require('../../assets/images/006-user.png')}
               />
             </Left>
-            <Body>
+            <Body style={{ paddingBottom: 25 }}>
               <View>
                 <Text style={{ paddingBottom: 10 }}>{this.state.name}</Text>
                 <Text numberOfLines={1} note>
-                  Child
+                  {this.state.masterId ? 'Child' : 'Parent'}
                 </Text>
               </View>
             </Body>

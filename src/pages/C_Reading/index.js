@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Alert } from 'react-native';
+import { View, TextInput, Alert, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from 'react-native-firebase';
@@ -31,6 +31,7 @@ import {
   Col,
   DatePicker,
   Thumbnail,
+  List,
   ListItem,
   H1
 } from 'native-base';
@@ -48,11 +49,15 @@ class C_ReadingScreen extends Component {
 
       visibleEndSession: false,
       visibleTimer: false,
+      visibleAchieve: false,
 
       interval: 0,
       timerStarted: false,
       page: '',
-      error: ''
+      error: '',
+
+      childId: '',
+      currentAchievement: null
     };
 
     const bookId = this.props.navigation.getParam('bookId', '');
@@ -113,8 +118,13 @@ class C_ReadingScreen extends Component {
     }
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.unsubscribe = this.bookRef.onSnapshot(this.onBookUpdate);
+
+    const uid = await AsyncStorage.getItem('childId');
+    this.setState({
+      childId: uid
+    });
   }
 
   componentWillUnmount() {
@@ -176,6 +186,33 @@ class C_ReadingScreen extends Component {
     });
   };
 
+  renderAchievement = () => {
+    const { icon, title, name } = this.state.currentAchievement;
+    return (
+      <Content contentContainerStyle={{ alignItems: 'center' }}>
+        <Thumbnail source={this.getImage(icon)} />
+
+        <H1 style={{ marginTop: 20 }}>{name}</H1>
+
+        <Label style={{ marginVertical: 20 }}>{title}</Label>
+
+        <Button
+          rounded
+          primary
+          style={{
+            alignSelf: 'center',
+            width: 100,
+            marginTop: 10,
+            justifyContent: 'center'
+          }}
+          onPress={this.okHandler}
+        >
+          <Text>OK</Text>
+        </Button>
+      </Content>
+    );
+  };
+
   renderTimer = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
@@ -227,7 +264,7 @@ class C_ReadingScreen extends Component {
         />
 
         <Label style={{ marginVertical: 20 }}>
-          Before ending this session, please enter the page number you got to:
+          Before ending this session, please enter number of pages you read:
         </Label>
 
         {this.state.error ? (
@@ -261,34 +298,55 @@ class C_ReadingScreen extends Component {
     );
   };
 
-  endSessionHandler = () => {
+  endSessionHandler = async () => {
     try {
       this.setState({ visibleEndSession: false });
       this.context.showLoading();
       const bookId = this.props.navigation.getParam('bookId', '');
 
-      if (this.state.page < 1 || this.state.page > this.state.pages) {
+      if (
+        !this.state.page ||
+        parseInt(this.state.page) < 1 ||
+        parseInt(this.state.page) + this.state.read > this.state.pages
+      ) {
         this.context.hideLoading();
         this.setState({
           error:
-            'The page number is not less than 1 or greater than total pages' +
-            this.state.pages,
+            'The number of pages is not less than 1 or greater than total pages ' +
+            this.state.pages +
+            ' ',
           visibleEndSession: true
         });
         return;
       }
 
-      Database.updateBook({
+      const book = await Database.updateBook({
         id: bookId,
-        read: this.state.page,
-        duration: this.state.interval
+        read: parseInt(this.state.page),
+        duration: parseInt(this.state.interval)
       });
+
+      //Todo: update goal, achievement, reading plan, stats (create if not existed)
+      const list = await Database.updateOthers({
+        childId: this.state.childId,
+        page: parseInt(this.state.page),
+        interval: parseInt(this.state.interval),
+        book: book.completed ? 1 : 0
+      });
+
+      //Todo: show achievement
+      if (list && list[0])
+        this.setState({
+          currentAchievement: list[0],
+          visibleAchieve: true
+        });
 
       this.setState({
         error: '',
-        visibleEndSession: false
+        visibleEndSession: false,
+        interval: 0,
+        page: ''
       });
-      //Todo: update goals
 
       this.context.hideLoading();
     } catch (error) {
@@ -329,6 +387,19 @@ class C_ReadingScreen extends Component {
             height="40%"
           >
             {this.renderEndSession()}
+          </Overlay>
+        )}
+
+        {this.state.visibleAchieve && (
+          <Overlay
+            isVisible
+            windowBackgroundColor="rgba(0, 0, 0, .7)"
+            overlayBackgroundColor="white"
+            width="80%"
+            height="40%"
+            onBackdropPress={() => this.setState({ visibleAchieve: false })}
+          >
+            {this.renderAchieve()}
           </Overlay>
         )}
 
@@ -375,31 +446,53 @@ class C_ReadingScreen extends Component {
             }
           /> */}
 
-          <Grid style={{ margin: 10 }}>
-            <Row style={{ marginBottom: 20 }}>
-              <Col>
-                <Text>Current Page</Text>
-                <Text>{read}</Text>
-              </Col>
-              <Col>
-                <Text>Read Time</Text>
-                <Text>{this.secondsToHms(duration)}</Text>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Text>Read Speed</Text>
-                <Text>
+          <List>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail
+                  source={require('../../assets/images/002-open-book.png')}
+                />
+              </Left>
+              <Body style={styles.body}>
+                <Text>Total pages read</Text>
+              </Body>
+              <Right style={styles.right}>
+                <Text style={styles.value}>{read} </Text>
+                <Text note>pages</Text>
+              </Right>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail
+                  source={require('../../assets/images/004-hourglass.png')}
+                />
+              </Left>
+              <Body style={styles.body}>
+                <Text>Total time read</Text>
+              </Body>
+              <Right style={styles.right}>
+                <Text style={styles.value}>{this.secondsToHms(duration)} </Text>
+              </Right>
+            </ListItem>
+            <ListItem avatar>
+              <Left>
+                <Thumbnail
+                  source={require('../../assets/images/003-stopwatch.png')}
+                />
+              </Left>
+              <Body style={styles.body}>
+                <Text>Reading speed</Text>
+              </Body>
+              <Right style={styles.right}>
+                <Text style={styles.value}>
                   {duration > 0
                     ? `${Math.round(read / (duration / 3600))}`
-                    : '0'}{' '}
+                    : '0'}
                 </Text>
-              </Col>
-              <Col>
-                <React.Fragment />
-              </Col>
-            </Row>
-          </Grid>
+                <Text note>pages/h</Text>
+              </Right>
+            </ListItem>
+          </List>
         </Content>
       </Container>
     );

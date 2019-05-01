@@ -13,6 +13,16 @@ export default StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 15
   },
+  iconWrapperActive: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#99ccff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginVertical: 15
+  },
   icon: {
     color: '#007AFF'
   }

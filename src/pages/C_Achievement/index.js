@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
 let dm = Dimensions.get('screen');
 
 import { AppContext, Navbar, C_TabBar } from 'app/components';
+import { ACHIEVEMENTS } from '../../constant';
 
 import styles from './style';
 
@@ -25,6 +26,8 @@ import {
   H1
 } from 'native-base';
 import { Overlay } from 'react-native-elements';
+import { Database } from '../../services';
+import moment from 'moment';
 
 class C_AchievementScreen extends Component {
   constructor(props) {
@@ -34,7 +37,8 @@ class C_AchievementScreen extends Component {
       visibleAchievement: false,
       currentAchievement: '',
 
-      list: []
+      list: ACHIEVEMENTS,
+      achievements: []
     };
 
     //console.error(bookId)
@@ -106,16 +110,23 @@ class C_AchievementScreen extends Component {
     }
   };
 
-  componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.onAchievementsUpdate);
+  async componentDidMount() {
+    // this.unsubscribe = this.ref.onSnapshot(this.onAchievementsUpdate);
+    const childId = await AsyncStorage.getItem('childId');
+
+    const list = await Database.getChildAchievements(childId);
+
+    this.setState({
+      achievements: list
+    });
   }
 
   componentWillUnmount() {
-    if (this.unsubscribe) this.unsubscribe();
+    // if (this.unsubscribe) this.unsubscribe();
   }
 
   renderAchievement = () => {
-    const { icon, title, name } = this.state.currentAchievement;
+    const { icon, title, name, date } = this.state.currentAchievement;
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
         <Thumbnail source={this.getImage(icon)} />
@@ -137,6 +148,13 @@ class C_AchievementScreen extends Component {
         >
           <Text>OK</Text>
         </Button>
+        {this.state.achieved ? (
+          <Label style={{ marginVertical: 20 }}>
+            Achieved on {moment(this.state.achieved).format('MM/DD/YYYY')}
+          </Label>
+        ) : (
+          <React.Fragment />
+        )}
       </Content>
     );
   };
@@ -144,14 +162,15 @@ class C_AchievementScreen extends Component {
   okHandler = () => {
     this.setState({
       visibleAchievement: false
-      // currentAchievement: item
+      //currentAchievement: item
     });
   };
 
-  openAchievement = (item) => {
+  openAchievement = (item, exist) => {
     this.setState({
       visibleAchievement: true,
-      currentAchievement: item
+      currentAchievement: item,
+      achieved: exist && exist.date
     });
   };
 
@@ -212,14 +231,25 @@ class C_AchievementScreen extends Component {
               return (
                 <Row key={i}>
                   {row.map((item, j) => {
+                    const exist = this.state.achievements.find(
+                      (a) => a.aId === item.id
+                    );
+
                     return (
                       <Col key={j}>
                         <TouchableOpacity
-                          style={styles.iconWrapper}
-                          onPress={this.openAchievement.bind(this, item)}
+                          style={
+                            !exist
+                              ? styles.iconWrapper
+                              : styles.iconWrapperActive
+                          }
+                          onPress={this.openAchievement.bind(this, item, exist)}
                         >
-                          <Thumbnail source={this.getImage(item.icon)} small />
+                          <Thumbnail small source={this.getImage(item.icon)} />
                         </TouchableOpacity>
+                        <Text style={{ textAlign: 'center' }} note>
+                          {item.name}
+                        </Text>
                       </Col>
                     );
                   })}

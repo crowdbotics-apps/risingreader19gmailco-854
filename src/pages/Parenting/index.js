@@ -47,7 +47,7 @@ class ParentingScreen extends Component {
   }
 
   async componentDidMount() {
-    //const uid = await AsyncStorage.getItem('childId');
+    //Todo:
     this.ref = firebase.firestore().collection('blogs');
     //.where('status', '==', 1);
 
@@ -103,6 +103,7 @@ class ParentingScreen extends Component {
   };
 
   render() {
+    //Todo:
     return (
       <Container>
         <Navbar

@@ -26,5 +26,17 @@ export default StyleSheet.create({
   switchWrapper: {
     justifyContent: 'center',
     paddingTop: 15
+  },
+  body: {
+    height: 70,
+    justifyContent: 'center'
+  },
+  right: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100
+  },
+  value: {
+    color: '#007AFF'
   }
 });

@@ -25,7 +25,8 @@ import {
   Left,
   Body,
   Right,
-  Thumbnail
+  Thumbnail,
+  Segment
 } from 'native-base';
 
 class StatsScreen extends Component {
@@ -39,13 +40,16 @@ class StatsScreen extends Component {
       longStreak: 0,
       pageRead: 0,
       speedRead: 0,
-      totalTime: 0
+      totalTime: 0,
+      seg: 1 //1: all, 2: 2019
     };
   }
 
   async componentDidMount() {
     try {
       const item = await Database.getStats();
+
+      if (!item) return;
 
       const {
         bestPages,
@@ -84,7 +88,22 @@ class StatsScreen extends Component {
 
     return (
       <Container>
-        <Navbar title="Stats" />
+        <Navbar title="Stats" hasTabs={true} />
+        <Segment>
+          <Button
+            first
+            active={this.state.seg === 1 ? true : false}
+            onPress={() => this.setState({ seg: 1 })}
+          >
+            <Text>All</Text>
+          </Button>
+          <Button
+            active={this.state.seg === 2 ? true : false}
+            onPress={() => this.setState({ seg: 2 })}
+          >
+            <Text>2019</Text>
+          </Button>
+        </Segment>
         <Content>
           <List>
             <ListItem avatar>
@@ -125,7 +144,11 @@ class StatsScreen extends Component {
                 <Text>Reading speed</Text>
               </Body>
               <Right style={styles.right}>
-                <Text style={styles.value}>{speedRead}</Text>
+                <Text style={styles.value}>
+                  {totalTime > 0
+                    ? `${Math.round(pageRead / (totalTime / 3600))}`
+                    : '0'}
+                </Text>
                 <Text note>pages/h</Text>
               </Right>
             </ListItem>
@@ -171,7 +194,7 @@ class StatsScreen extends Component {
                 <Text note>mins</Text>
               </Right>
             </ListItem>
-            <ListItem avatar>
+            {/* <ListItem avatar>
               <Left>
                 <Thumbnail
                   source={require('../../assets/images/007-schedule.png')}
@@ -184,7 +207,7 @@ class StatsScreen extends Component {
                 <Text style={styles.value}>{longStreak}</Text>
                 <Text note>days</Text>
               </Right>
-            </ListItem>
+            </ListItem> */}
           </List>
         </Content>
         <TabBar tab3={true} navigation={this.props.navigation} />

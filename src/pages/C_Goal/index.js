@@ -3,7 +3,7 @@ import { View, Dimensions, AsyncStorage } from 'react-native';
 import moment, { lang } from 'moment';
 import PropTypes from 'prop-types';
 import firebase from 'react-native-firebase';
-import { alert, success } from 'app/utils/Alert';
+import { alert, success, timeConvert } from 'app/utils/Alert';
 
 let dm = Dimensions.get('screen');
 
@@ -86,7 +86,7 @@ class C_GoalScreen extends Component {
       }
 
       this.setState({
-        tasks: [...plan.tasks],
+        tasks: this.sortTasks([...plan.tasks]),
         segGoal: plan.segGoal
       });
 
@@ -95,6 +95,18 @@ class C_GoalScreen extends Component {
       this.context.hideLoading();
       alert(error.message);
     }
+  };
+
+  sortTasks = (tasks) => {
+    for (i = 0; i < tasks.length; i++) {
+      for (j = i + 1; j < tasks.length; j++)
+        if (tasks[i].id > tasks[j].id) {
+          const temp = tasks[j];
+          tasks[j] = tasks[i];
+          tasks[i] = temp;
+        }
+    }
+    return tasks;
   };
 
   async componentDidMount() {
@@ -119,22 +131,22 @@ class C_GoalScreen extends Component {
           <List>
             {this.state.tasks.map((data, i) => {
               const { task, end, start, number, progress } = data;
-              let value = 0;
-              if (progress) {
+              let value = data[this.state.childId]
+                ? timeConvert(data[this.state.childId])
+                : 0;
+              {
+                /* if (progress) {
                 const p = progress.filter((v, i) => {
                   return v.uid === this.state.childId;
                 });
 
                 value = p != null ? parseInt(p[0].value) : 0;
                 //console.error(p, value)
+              } */
               }
 
               return (
-                <ListItem
-                  avatar
-                  key={i}
-                  onPress={() => success('you clicked on a task')}
-                >
+                <ListItem avatar key={i}>
                   <Left>
                     <Avatar
                       size="large"
@@ -164,10 +176,25 @@ class C_GoalScreen extends Component {
                           style={{ marginTop: 10 }} //width: dm.width * 0.95,
                           disabled
                         />
-                        <H3 style={{ alignSelf: 'center', color: '#007AFF' }}>
-                          {value}/{number}{' '}
-                          {this.state.segGoal === 1 ? 'hours' : 'pages'}
-                        </H3>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <Text
+                            style={{
+                              alignSelf: 'center',
+                              color: '#007AFF',
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            {value}/{number}{' '}
+                          </Text>
+                          <Text note>
+                            {this.state.segGoal === 1 ? 'hours' : 'pages'}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </Body>

@@ -100,8 +100,6 @@ class C_MainScreen extends Component {
     return (
       <Container>
         <Navbar
-          left="arrow-back"
-          leftHandler={this.leftHandler}
           title="All Books"
           right="plus-square"
           rightHandler={this.rightHandler}

@@ -101,9 +101,7 @@ class GoalsScreen extends Component {
     this.props.navigation.navigate('profile');
   };
 
-  editHandler = (id, masterId) => {
-    
-  };
+  editHandler = (id, masterId) => {};
 
   deleteHandler = (id) => {
     Alert.alert(
@@ -135,11 +133,9 @@ class GoalsScreen extends Component {
               return (
                 <ListItem avatar key={data.id}>
                   <Left>
-                    <Icon
-                      active
-                      type="FontAwesome"
-                      name="trophy"
-                      style={{ color: '#007AFF' }}
+                    <Thumbnail
+                      square
+                      source={require('../../assets/images/001-best.png')}
                     />
                   </Left>
                   <Body>
@@ -164,7 +160,9 @@ class GoalsScreen extends Component {
                       </View>
                     </TouchableOpacity>
                   </Body>
-                  <Right><Text> </Text></Right>
+                  <Right>
+                    <Text> </Text>
+                  </Right>
                 </ListItem>
               );
             })}

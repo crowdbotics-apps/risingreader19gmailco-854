@@ -7,3 +7,7 @@ export const alert = (text) => {
 export const success = (text) => {
   Alert.alert('Success :)', text, [{ text: 'OK' }], { cancelable: false });
 };
+
+export const timeConvert = (ms) => {
+  return Math.floor(ms / 3600);
+};

@@ -138,8 +138,6 @@ class LoginScreen extends React.Component {
       let ref = store.collection('users').doc(user.uid);
       const doc = await ref.get();
       if (!doc.exists) {
-        //do
-
         doc.set({
           id: user.uid,
           name: user.displayName,
@@ -149,6 +147,8 @@ class LoginScreen extends React.Component {
           masterId: '',
           status: 1
         });
+
+        //TODO: create STATS
       }
 
       if (!user.email != null) {

@@ -95,9 +95,8 @@ class UsersScreen extends Component {
     this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
   }
 
-  componentWillUnmount(){
-    if(this.unsubscribe)
-      this.unsubscribe()
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
   }
 
   leftHandler = () => {
@@ -144,11 +143,19 @@ class UsersScreen extends Component {
               return (
                 <ListItem avatar key={data.key}>
                   <Left>
-                    <Icon active type="FontAwesome" name="user" style={{ color: '#007AFF' }}/>
+                    <Thumbnail
+                      square
+                      style={{ marginBottom: 10 }}
+                      source={require('../../assets/images/006-user.png')}
+                    />
                   </Left>
-                  <Body>
+                  <Body style={{ paddingBottom: 25 }}>
                     <TouchableOpacity
-                      onPress={this.editHandler.bind(this, data.key, data.masterId)}
+                      onPress={this.editHandler.bind(
+                        this,
+                        data.key,
+                        data.masterId
+                      )}
                     >
                       <View>
                         <Text style={{ paddingBottom: 10 }}>{data.name}</Text>
@@ -169,13 +176,22 @@ class UsersScreen extends Component {
                         <Col>
                           {data.masterId ? (
                             <TouchableOpacity
-                              onPress={this.deleteHandler.bind(this, data.key)} 
-                              
+                              onPress={this.deleteHandler.bind(this, data.key)}
                             >
-                              <Icon active type="FontAwesome" name="trash" style={{color:'red'}}/>
+                              <Icon
+                                active
+                                type="FontAwesome"
+                                name="trash"
+                                style={{ color: 'red' }}
+                              />
                             </TouchableOpacity>
                           ) : (
-                            <Icon active type="FontAwesome" name="check" style={{color:'green'}}/>
+                            <Icon
+                              active
+                              type="FontAwesome"
+                              name="check"
+                              style={{ color: 'green' }}
+                            />
                           )}
                         </Col>
                       </Row>
