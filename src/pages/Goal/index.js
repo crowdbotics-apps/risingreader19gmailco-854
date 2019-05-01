@@ -211,7 +211,7 @@ class GoalScreen extends Component {
     }
 
     if (!number) {
-      alert("number date can't be empty!");
+      alert("number can't be empty!");
       return false;
     }
 

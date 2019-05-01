@@ -27,10 +27,13 @@ import {
   Col,
   Thumbnail
 } from 'native-base';
+import { SocialIcon } from 'react-native-elements';
+
 import styles from './style';
 import LogoIcon from 'app/assets/images/logo.png';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import firebase from 'react-native-firebase';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const store = firebase.firestore();
 
 const emailRegEx =
@@ -228,14 +231,22 @@ class LoginScreen extends React.Component {
               <Text>Forgot password?</Text>
             </Button>
 
-            <Button
+            <TouchableOpacity onPress={this.facebookLogin}>
+              <SocialIcon
+                title="Sign In With Facebook"
+                button
+                type="facebook"
+              />
+            </TouchableOpacity>
+
+            {/* <Button
               rounded
               primary
               style={{ alignSelf: 'center', width: '100%' }}
               onPress={this.facebookLogin}
             >
               <Text style={styles.buttonText}>Login with Facebook</Text>
-            </Button>
+            </Button> */}
           </Form>
         </Content>
       </Container>

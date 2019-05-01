@@ -135,6 +135,37 @@ class C_ReadingScreen extends Component {
     this.props.navigation.goBack();
   };
 
+  getImage = (id) => {
+    switch (id) {
+      case 1:
+        return require('../../assets/achievements/001.png');
+      case 2:
+        return require('../../assets/achievements/002.png');
+      case 3:
+        return require('../../assets/achievements/003.png');
+      case 4:
+        return require('../../assets/achievements/004.png');
+      case 5:
+        return require('../../assets/achievements/005.png');
+      case 6:
+        return require('../../assets/achievements/006.png');
+      case 7:
+        return require('../../assets/achievements/007.png');
+      case 8:
+        return require('../../assets/achievements/008.png');
+      case 9:
+        return require('../../assets/achievements/009.png');
+      case 10:
+        return require('../../assets/achievements/010.png');
+      case 11:
+        return require('../../assets/achievements/011.png');
+      case 12:
+        return require('../../assets/achievements/012.png');
+      default:
+        return require('../../assets/achievements/012.png');
+    }
+  };
+
   readHandler = (id) => {
     // this.props.navigation.navigate('c_progress', { bookId: id });
     this.setState({ visibleTimer: true });
@@ -191,10 +222,12 @@ class C_ReadingScreen extends Component {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
         <Thumbnail source={this.getImage(icon)} />
+        <Text style={{ fontWeight: 'bold', marginTop: 10 }}>
+          Congratulation! You achieved
+        </Text>
+        <H1 style={{ marginTop: 10 }}>{name}</H1>
 
-        <H1 style={{ marginTop: 20 }}>{name}</H1>
-
-        <Label style={{ marginVertical: 20 }}>{title}</Label>
+        <Label style={{ marginVertical: 10 }}>{title}</Label>
 
         <Button
           rounded
@@ -205,7 +238,7 @@ class C_ReadingScreen extends Component {
             marginTop: 10,
             justifyContent: 'center'
           }}
-          onPress={this.okHandler}
+          onPress={() => this.setState({ visibleAchieve: false })}
         >
           <Text>OK</Text>
         </Button>
@@ -216,11 +249,7 @@ class C_ReadingScreen extends Component {
   renderTimer = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
-        <Icon
-          type="FontAwesome5"
-          name="hourglass-half" //hourglass-half
-          style={{ fontSize: 60, color: '#007AFF' }}
-        />
+        <Thumbnail source={require('../../assets/images/001-history.png')} />
 
         <Label style={{ marginVertical: 20 }}>Start your reading</Label>
 
@@ -257,11 +286,7 @@ class C_ReadingScreen extends Component {
   renderEndSession = () => {
     return (
       <Content contentContainerStyle={{ alignItems: 'center' }}>
-        <Icon
-          type="FontAwesome5"
-          name="hourglass-end"
-          style={{ fontSize: 60, color: '#007AFF' }}
-        />
+        <Thumbnail source={require('../../assets/images/002-book.png')} />
 
         <Label style={{ marginVertical: 20 }}>
           Before ending this session, please enter number of pages you read:
@@ -400,7 +425,7 @@ class C_ReadingScreen extends Component {
             height="40%"
             onBackdropPress={() => this.setState({ visibleAchieve: false })}
           >
-            {this.renderAchieve()}
+            {this.renderAchievement()}
           </Overlay>
         )}
 

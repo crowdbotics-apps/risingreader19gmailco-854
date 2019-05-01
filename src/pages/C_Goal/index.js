@@ -130,10 +130,17 @@ class C_GoalScreen extends Component {
         <Content>
           <List>
             {this.state.tasks.map((data, i) => {
-              const { task, end, start, number, progress } = data;
-              let value = task[this.state.childId]
-                ? timeConvert(task[this.state.childId])
-                : 0;
+              const { task, end, start, number } = data;
+
+              let value = 0;
+
+              if (this.state.segGoal === 1)
+                value = data[this.state.childId]
+                  ? timeConvert(data[this.state.childId])
+                  : 0;
+              else
+                value = data[this.state.childId] ? data[this.state.childId] : 0;
+
               {
                 /* if (progress) {
                 const p = progress.filter((v, i) => {

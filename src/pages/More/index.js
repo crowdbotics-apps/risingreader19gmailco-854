@@ -54,7 +54,7 @@ class MoreScreen extends Component {
   toggleSignOut = async () => {
     try {
       await AuthController.logout();
-      await AsyncStorage.clear();
+      //await AsyncStorage.remove();
       this.props.navigation.navigate('auth');
     } catch (error) {
       alert(error.message);

@@ -434,7 +434,8 @@ const updateOthers = async ({ childId, page, interval, book }) => {
         const updGoal = {
           value: item.segGoal === 2 ? item.value + page : item.value + interval,
           status: item.status,
-          end: item.end
+          end: item.end,
+          number: item.number
         };
         if (item.segGoal === 2 && updGoal.number <= updGoal.value) {
           updGoal.status = 2;
@@ -473,6 +474,7 @@ const updateOthers = async ({ childId, page, interval, book }) => {
             value =
               segGoal === 2 ? task[childId] + page : task[childId] + interval;
           else value = segGoal === 2 ? page : interval;
+
           if (value > task.number) value = task.number;
           //Todo: move left over to next task
           // console.error(value);
@@ -485,7 +487,7 @@ const updateOthers = async ({ childId, page, interval, book }) => {
             tasks: [...tasks.filter((item) => item.id !== updTask.id), updTask]
           });
         } else {
-          const lst = tasks.filter((item) => item[childId] != null);
+          const lst = tasks.filter((item) => item[childId] == null);
 
           if (lst && lst[0]) {
             const min = 0;
@@ -495,9 +497,11 @@ const updateOthers = async ({ childId, page, interval, book }) => {
 
             const task = lst[min];
             let value = segGoal === 2 ? page : interval;
+
             if (segGoal === 2 && value > task.number) value = task.number;
             if (segGoal === 1 && value > task.number * 3600)
               value = task.number;
+
             //Todo: move left over to next task
             const updTask = {
               ...task,
@@ -536,19 +540,19 @@ const updateOthers = async ({ childId, page, interval, book }) => {
             case 1: //hour
               if (item.value * 3600 < userTotalTime) {
                 createAchievement({ aId: item.id, childId });
-                newChildAchieve.push(item.id);
+                newChildAchieve.push(item);
               }
 
               break;
             case 2: //page
               if (item.value < userPageRead) {
                 createAchievement({ aId: item.id, childId });
-                newChildAchieve.push(item.id);
+                newChildAchieve.push(item);
               }
             case 3: //book
               if (item.value < userBookNo) {
                 createAchievement({ aId: item.id, childId });
-                newChildAchieve.push(item.id);
+                newChildAchieve.push(item);
               }
           }
         }

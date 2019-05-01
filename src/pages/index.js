@@ -80,7 +80,7 @@ const MainStackNavigator = createStackNavigator(
     goals: GoalsScreen
   },
   {
-    initialRouteName: 'c_books',
+    initialRouteName: 'goal',
     headerMode: 'none'
   }
 );
